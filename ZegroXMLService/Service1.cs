@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
+using BLL.Managers;
 using Models.DB;
 using Models.DTO;
+using DAL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.ServiceProcess;
 using System.Text;
@@ -18,11 +21,30 @@ namespace ZegroXMLService
 		public XMLService()
 		{
 			InitializeComponent();
+			CanStop = true;
+			CanPauseAndContinue = true;
+			AutoLog = true;
 		}
 
-		protected override void OnStart(string[] args)
+		protected override async void OnStart(string[] args)
 		{
+			using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
+			{
+				writer.WriteLine(String.Format("service start {0}",
+					DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss")));
+				writer.Flush();
+			}
 			Mapper.Initialize(initializeMapper);
+			XMLManager manager = new XMLManager(new MainContext());
+
+			var testData = await manager.GetAll<imgtype, ImageTypeDTO>();
+
+			using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
+			{
+				writer.WriteLine(String.Format("service start {0}, {1}",
+					DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), testData.FirstOrDefault().ad));
+				writer.Flush();
+			}
 			//scheduler start
 		}
 

@@ -75,6 +75,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BLL\BLL.csproj">
+      <Project>{9C75F0F2-8995-4364-B039-96AEC6C58CB5}</Project>
+      <Name>BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DAL\DAL.csproj">
+      <Project>{f7c89a7e-0cf6-457a-9960-78422645f27a}</Project>
+      <Name>DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{4297F211-959F-455B-A978-61CFEBB3D645}</Project>
       <Name>Models</Name>

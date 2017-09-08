@@ -17,7 +17,7 @@ namespace ZegroXMLService
 			ServiceBase[] ServicesToRun;
 			ServicesToRun = new ServiceBase[]
 			{
-				new Service1()
+				new XMLService()
 			};
 			ServiceBase.Run(ServicesToRun);
 		}

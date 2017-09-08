@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace ZegroXMLService
 {
-	public partial class Service1 : ServiceBase
+	public partial class XMLService : ServiceBase
 	{
-		public Service1()
+		public XMLService()
 		{
 			InitializeComponent();
 		}

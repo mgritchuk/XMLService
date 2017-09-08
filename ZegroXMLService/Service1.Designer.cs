@@ -1,6 +1,6 @@
 ﻿namespace ZegroXMLService
 {
-	partial class Service1
+	partial class XMLService
 	{
 		/// <summary> 
 		/// Required designer variable.

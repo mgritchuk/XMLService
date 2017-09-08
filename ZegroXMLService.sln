@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZegroXMLService", "ZegroXMLService\ZegroXMLService.csproj", "{6C6D3F19-FBD0-48DF-AD56-B6CB6C953894}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{4297F211-959F-455B-A978-61CFEBB3D645}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{F7C89A7E-0CF6-457A-9960-78422645F27A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{6C6D3F19-FBD0-48DF-AD56-B6CB6C953894}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C6D3F19-FBD0-48DF-AD56-B6CB6C953894}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C6D3F19-FBD0-48DF-AD56-B6CB6C953894}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4297F211-959F-455B-A978-61CFEBB3D645}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4297F211-959F-455B-A978-61CFEBB3D645}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4297F211-959F-455B-A978-61CFEBB3D645}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4297F211-959F-455B-A978-61CFEBB3D645}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7C89A7E-0CF6-457A-9960-78422645F27A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7C89A7E-0CF6-457A-9960-78422645F27A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7C89A7E-0CF6-457A-9960-78422645F27A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7C89A7E-0CF6-457A-9960-78422645F27A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

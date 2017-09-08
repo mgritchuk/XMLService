@@ -18,12 +18,20 @@ namespace ZegroXMLService
 		{
 			//Container container = new Container();
 			//container.Options.DefaultScopedLifestyle = new ExecutionContextScopeLifestyle();
+			#if DEBUG
+			//While debugging this section is used.
+			XMLService myService = new XMLService();
+			myService.onDebug();
+			System.Threading.Thread.Sleep(System.Threading.Timeout.Infinite);
+
+			#else
 			ServiceBase[] ServicesToRun;
 			ServicesToRun = new ServiceBase[]
 			{
 				new XMLService()
 			};
 			ServiceBase.Run(ServicesToRun);
+			#endif
 		}
 	}
 }

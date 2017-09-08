@@ -11,7 +11,7 @@ namespace Models.DTO
 	public class UserPlannerDTO
 	{
 
-		public UserPlannerDTO(planner planner, planstatus member_status)
+		public UserPlannerDTO(les_planner planner, les_planstatus member_status)
 		{
 			Mapper.Map(planner, this);
 			this.member_status = Mapper.Map<PlanStatusDTO>(member_status);

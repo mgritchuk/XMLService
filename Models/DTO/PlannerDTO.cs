@@ -15,7 +15,7 @@ namespace Models.DTO
 
 		}
 
-		public PlannerDTO(planner planner, int member_count)
+		public PlannerDTO(les_planner planner, int member_count)
 		{
 			Mapper.Map(planner, this);
 			this.member_count = member_count;

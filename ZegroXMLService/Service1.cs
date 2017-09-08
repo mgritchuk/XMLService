@@ -18,12 +18,19 @@ namespace ZegroXMLService
 {
 	public partial class XMLService : ServiceBase
 	{
+		private readonly XMLManager manager;
+		public void onDebug()
+		{
+			OnStart(null);
+		}
+
 		public XMLService()
 		{
 			InitializeComponent();
 			CanStop = true;
 			CanPauseAndContinue = true;
 			AutoLog = true;
+			manager = new XMLManager(new MainContext());
 		}
 
 		protected override async void OnStart(string[] args)
@@ -35,16 +42,28 @@ namespace ZegroXMLService
 				writer.Flush();
 			}
 			Mapper.Initialize(initializeMapper);
-			XMLManager manager = new XMLManager(new MainContext());
+			
 
-			var testData = await manager.GetAll<imgtype, ImageTypeDTO>();
-
-			using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
+			try
 			{
-				writer.WriteLine(String.Format("service start {0}, {1}",
-					DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), testData.FirstOrDefault().ad));
-				writer.Flush();
+				var testData = await manager.GetAll<imgtype, ImageTypeDTO>();
+				using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
+				{
+					writer.WriteLine(String.Format("service start {0}, {1}",
+						DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), testData.FirstOrDefault().ad));
+					writer.Flush();
+				}
 			}
+			catch (Exception ex)
+			{
+				using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
+				{
+					writer.WriteLine(String.Format("exception  {0},{1}",
+						DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), ex.ToString()));
+					writer.Flush();
+				}
+			}
+			
 			//scheduler start
 		}
 

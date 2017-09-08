@@ -30,8 +30,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,10 +51,156 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DB\cmp.cs" />
+    <Compile Include="DB\fincur.cs" />
+    <Compile Include="DB\finpaymentmethod.cs" />
+    <Compile Include="DB\finvat.cs" />
+    <Compile Include="DB\frmmod.cs" />
+    <Compile Include="DB\frmmst.cs" />
+    <Compile Include="DB\imgtype.cs" />
+    <Compile Include="DB\itm.cs" />
+    <Compile Include="DB\itmalba.cs" />
+    <Compile Include="DB\itmalbamst.cs" />
+    <Compile Include="DB\itmass.cs" />
+    <Compile Include="DB\itmassind.cs" />
+    <Compile Include="DB\itmasslog.cs" />
+    <Compile Include="DB\itmassmst.cs" />
+    <Compile Include="DB\itmassmstlog.cs" />
+    <Compile Include="DB\itmassrel.cs" />
+    <Compile Include="DB\itmassrellog.cs" />
+    <Compile Include="DB\itmclc.cs" />
+    <Compile Include="DB\itmgrai.cs" />
+    <Compile Include="DB\itmgrp.cs" />
+    <Compile Include="DB\itmimage.cs" />
+    <Compile Include="DB\itmprc.cs" />
+    <Compile Include="DB\itmprcind.cs" />
+    <Compile Include="DB\itmprcmst.cs" />
+    <Compile Include="DB\itmprcrel.cs" />
+    <Compile Include="DB\itmpublish.cs" />
+    <Compile Include="DB\itmpublishmst.cs" />
+    <Compile Include="DB\itmunit.cs" />
+    <Compile Include="DB\lesson.cs" />
+    <Compile Include="DB\lessontype.cs" />
+    <Compile Include="DB\les_absence.cs" />
+    <Compile Include="DB\les_access_ip.cs" />
+    <Compile Include="DB\les_closed_day.cs" />
+    <Compile Include="DB\les_interval.cs" />
+    <Compile Include="DB\les_plannedmember.cs" />
+    <Compile Include="DB\les_planner.cs" />
+    <Compile Include="DB\les_planstatus.cs" />
+    <Compile Include="DB\logDbMigrations.cs" />
+    <Compile Include="DB\logemail.cs" />
+    <Compile Include="DB\logordgrais.cs" />
+    <Compile Include="DB\logordlines.cs" />
+    <Compile Include="DB\logordmain.cs" />
+    <Compile Include="DB\modcmp.cs" />
+    <Compile Include="DB\modmst.cs" />
+    <Compile Include="DB\modrolgrp.cs" />
+    <Compile Include="DB\modrolusr.cs" />
+    <Compile Include="DB\ordgrai.cs" />
+    <Compile Include="DB\ordimage.cs" />
+    <Compile Include="DB\ordline.cs" />
+    <Compile Include="DB\ordlineflaw.cs" />
+    <Compile Include="DB\ordlinelog.cs" />
+    <Compile Include="DB\ordlinerefused.cs" />
+    <Compile Include="DB\ordmain.cs" />
+    <Compile Include="DB\ordmainlog.cs" />
+    <Compile Include="DB\ordshopcart.cs" />
+    <Compile Include="DB\ordstatus.cs" />
+    <Compile Include="DB\ordtype.cs" />
+    <Compile Include="DB\prcetype.cs" />
+    <Compile Include="DB\rel.cs" />
+    <Compile Include="DB\relcontact.cs" />
+    <Compile Include="DB\relcontactlog.cs" />
+    <Compile Include="DB\relemail.cs" />
+    <Compile Include="DB\relitmdeliverydays.cs" />
+    <Compile Include="DB\relmod.cs" />
+    <Compile Include="DB\relnews.cs" />
+    <Compile Include="DB\relnewsgrp.cs" />
+    <Compile Include="DB\relnewsgrpmst.cs" />
+    <Compile Include="DB\relsalutation.cs" />
+    <Compile Include="DB\relstatus.cs" />
+    <Compile Include="DB\relusr.cs" />
+    <Compile Include="DB\relusrlog.cs" />
+    <Compile Include="DB\rolmodgrp.cs" />
+    <Compile Include="DB\sysdiagrams.cs" />
+    <Compile Include="DB\syslogapi.cs" />
+    <Compile Include="DB\syssettings.cs" />
+    <Compile Include="DB\tsptour.cs" />
+    <Compile Include="DB\tspvehicle.cs" />
+    <Compile Include="DB\tspvehicleposlog.cs" />
+    <Compile Include="DTO\AbsenceDTO.cs" />
+    <Compile Include="DTO\AccessIpDTO.cs" />
+    <Compile Include="DTO\BrowseAdDTO.cs" />
+    <Compile Include="DTO\BrowseFormDTO.cs" />
+    <Compile Include="DTO\BrowseIdDTO.cs" />
+    <Compile Include="DTO\ClosedDayDTO.cs" />
+    <Compile Include="DTO\CommonDTO.cs" />
+    <Compile Include="DTO\CompanyModel.cs" />
+    <Compile Include="DTO\DeliveryDaysSchedulItemDTO.cs" />
+    <Compile Include="DTO\EmailModel.cs" />
+    <Compile Include="DTO\EncodedImage.cs" />
+    <Compile Include="DTO\FinPaymentMethodDTO.cs" />
+    <Compile Include="DTO\FinvatDTO.cs" />
+    <Compile Include="DTO\FullNewsDTO.cs" />
+    <Compile Include="DTO\ImageTypeDTO.cs" />
+    <Compile Include="DTO\IntervalDTO.cs" />
+    <Compile Include="DTO\ItemAssortmentRelationDTO.cs" />
+    <Compile Include="DTO\ItemCrateDTO.cs" />
+    <Compile Include="DTO\ItemDTO.cs" />
+    <Compile Include="DTO\ItemImageDTO.cs" />
+    <Compile Include="DTO\ItemPriceDTO.cs" />
+    <Compile Include="DTO\ItemPriceRelationDTO.cs" />
+    <Compile Include="DTO\ItemPublishDTO.cs" />
+    <Compile Include="DTO\ItmAlbaDTO.cs" />
+    <Compile Include="DTO\ItmAssDTO.cs" />
+    <Compile Include="DTO\ItmPrcDTO.cs" />
+    <Compile Include="DTO\LessonDTO.cs" />
+    <Compile Include="DTO\LessonTypeDTO.cs" />
+    <Compile Include="DTO\LesUserDTO.cs" />
+    <Compile Include="DTO\LogEmailDTO.cs" />
+    <Compile Include="DTO\LoginModel.cs" />
+    <Compile Include="DTO\LogOrdGraiDTO.cs" />
+    <Compile Include="DTO\LogOrdLineDTO.cs" />
+    <Compile Include="DTO\LogOrdmainDTO.cs" />
+    <Compile Include="DTO\logVehicleDTO.cs" />
+    <Compile Include="DTO\ModRolGrp.cs" />
+    <Compile Include="DTO\ModuleDTO.cs" />
+    <Compile Include="DTO\ModuleLinkToForms.cs" />
+    <Compile Include="DTO\NewsDTO.cs" />
+    <Compile Include="DTO\OrderCrateDTO.cs" />
+    <Compile Include="DTO\OrderFilter.cs" />
+    <Compile Include="DTO\OrderImageDTO.cs" />
+    <Compile Include="DTO\OrderLineDTO.cs" />
+    <Compile Include="DTO\OrderLineRefusedDTO.cs" />
+    <Compile Include="DTO\OrderListDTO.cs" />
+    <Compile Include="DTO\OrdMainDTO.cs" />
+    <Compile Include="DTO\PlannedMemberDTO.cs" />
+    <Compile Include="DTO\PlannerDTO.cs" />
+    <Compile Include="DTO\PlanStatusDTO.cs" />
+    <Compile Include="DTO\PromoItemDTO.cs" />
+    <Compile Include="DTO\RelationContactsDTO.cs" />
+    <Compile Include="DTO\RelationEmailDTO.cs" />
+    <Compile Include="DTO\RelationSalutationDTO.cs" />
+    <Compile Include="DTO\RelationShortDTO.cs" />
+    <Compile Include="DTO\RelDTO.cs" />
+    <Compile Include="DTO\RelUsrLevelMod.cs" />
+    <Compile Include="DTO\RoleDTO.cs" />
+    <Compile Include="DTO\RolModGrp.cs" />
+    <Compile Include="DTO\SelectListDTO.cs" />
+    <Compile Include="DTO\SEttingDTO.cs" />
+    <Compile Include="DTO\ShopingCartDTO.cs" />
+    <Compile Include="DTO\TransportVehicleDTO.cs" />
+    <Compile Include="DTO\UserDTO.cs" />
+    <Compile Include="DTO\UserPlannerDTO.cs" />
+    <Compile Include="DTO\UserRoleUpdateDTO.cs" />
+    <Compile Include="DTO\webmesDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="DB\" />
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

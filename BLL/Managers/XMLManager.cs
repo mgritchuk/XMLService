@@ -8,7 +8,6 @@ using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using System.Linq;
-using static ImportSpecPriceModel;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 
@@ -95,22 +94,46 @@ namespace BLL.Managers
 
 					using (StringReader s = new StringReader(path))
 						xml = XDocument.Load(s);
-
-
-					var docs = xml.Descendants("Items")
-						.SelectMany(x => x.Elements())
-						.Select(s =>
-						{
-							var tempDoc = new XDocument(xml);
-							var elementToDelete = tempDoc.Elements("ImportData").Elements("Items").Elements("Item").ToList();
-							foreach (XElement elem in elementToDelete)
+					List<XDocument> docs = new List<XDocument>();
+					switch (typeof(T).Name.ToString())
+					{
+						case "ImportItem":
 							{
-								if (s.ToString() != elem.ToString())
-									elem.Remove();
+								docs = xml.Descendants("Items")
+									.SelectMany(x => x.Elements())
+									.Select(s =>
+									{
+										var tempDoc = new XDocument(xml);
+										var elementToDelete = tempDoc.Elements("ImportData").Elements("Items").Elements("Item").ToList();
+										foreach (XElement elem in elementToDelete)
+										{
+											if (s.ToString() != elem.ToString())
+												elem.Remove();
+										}
+								//var x = temp.Elements("ImportData").Elements("Items").Select(e => e.Elements("Item").Where(i => i == s).FirstOrDefault());
+								return tempDoc;
+									}).ToList();
+								break;
 							}
-							//var x = temp.Elements("ImportData").Elements("Items").Select(e => e.Elements("Item").Where(i => i == s).FirstOrDefault());
-							return tempDoc;
-						}).ToList();
+						case "ImportCustomer":
+							{
+								docs = xml.Descendants("Customers")
+									.SelectMany(x => x.Elements())
+									.Select(s =>
+									{
+										var tempDoc = new XDocument(xml);
+										var elementToDelete = tempDoc.Elements("ImportData").Elements("Customers").Elements("Customer").ToList();
+										foreach (XElement elem in elementToDelete)
+										{
+											if (s.ToString() != elem.ToString())
+												elem.Remove();
+										}
+										return tempDoc;
+									}).ToList();
+								break;
+							}
+						
+					}
 					List<T> retrievedValues = new List<T>();
 					foreach (XDocument doc in docs)
 					{

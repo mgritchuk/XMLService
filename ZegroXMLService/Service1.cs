@@ -43,7 +43,7 @@ namespace ZegroXMLService
 			}
 			
 			Mapper.Initialize(initializeMapper);
-			await manager.GetItems<ImportItem>(XMLManager.Types.ITEMS);
+			await manager.GetItems<ImportCustomer>(XMLManager.Types.CUSTOMERS);
 
 			try
 			{
@@ -97,28 +97,7 @@ namespace ZegroXMLService
 
 		private void initializeMapper(IMapperConfigurationExpression cfg)
 		{
-			//cfg.CreateMap<XDocument, ImportItem>()
-			//	.ForMember(
-			//		dest => dest.DisplayCode,
-			//		options => options.ResolveUsing(src => { return Resolve(src, "DisplayCode"); })
-			//		//.formember(source => source.Element("DisplayCode")
-			//		//.Descendants("DisplayCode").Single())
-			//	);
 
-			//cfg.CreateMap<XDocument, ImportItem>()
-			//	.ForMember(
-			//		dest => dest.SolidisPK,
-			//		options => options.ResolveUsing(src => { return Resolve(src, "SolidisPK"); })
-			//);
-
-			//cfg.CreateMap<XDocument, ImportItem>()
-			//	.ForMember(
-			//		dest => dest.Description,
-			//		options => options.ResolveUsing(src => 
-			//			{
-			//				return Resolve(src, "Description");
-			//			})
-			//);
 			cfg.CreateMap<XDocument, ImportItem>()
 				.ForMember(
 					dest => dest.DefaultUnitOfMeasure,
@@ -150,7 +129,46 @@ namespace ZegroXMLService
 					options => options.ResolveUsing(src => { return ResolveAttribute(src, "Item", "Validation"); }))
 				;
 
-
+			cfg.CreateMap<XDocument, ImportCustomer>()
+				.ForMember(
+					dest => dest.Displaycode,
+					opt => opt.ResolveUsing(src => { return ResolveElement(src, "Displaycode"); }))
+				.ForMember(
+					dest => dest.SolidisPK,
+					opt => opt.ResolveUsing(src => { return ResolveElement(src, "SolidisPK"); }))
+				.ForMember(
+						dest => dest.Name,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "Name"); }))
+				.ForMember(
+						dest => dest.Street,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "Street"); }))
+				.ForMember(
+						dest => dest.StreetNr,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "StreetNr"); }))
+				.ForMember(
+						dest => dest.StreetNrAdd,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "StreetNrAdd"); }))
+				.ForMember(
+						dest => dest.City,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "City"); }))
+				.ForMember(
+						dest => dest.Zip,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "Zip"); }))
+				.ForMember(
+						dest => dest.Country,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "Country"); }))
+				.ForMember(
+						dest => dest.Phone,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "Phone"); }))
+				.ForMember(
+						dest => dest.Fax,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "Fax"); }))
+				.ForMember(
+						dest => dest.Street,
+						opt => opt.ResolveUsing(src => { return ResolveAttribute(src, "Customer", "Action"); }))
+				.ForMember(
+						dest => dest.Street,
+						opt => opt.ResolveUsing(src => { return ResolveAttribute(src, "Customer", "Validation"); }));
 
 			//cfg.CreateMap<XDocument, ImportItem>()
 			//	.ForMember(

@@ -2,7 +2,6 @@
 using BLL.Managers;
 using Models.DB;
 using Models.DTO;
-using DAL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +12,7 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace ZegroXMLService
 {
@@ -41,8 +41,9 @@ namespace ZegroXMLService
 					DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss")));
 				writer.Flush();
 			}
-			Mapper.Initialize(initializeMapper);
 			
+			Mapper.Initialize(initializeMapper);
+			await manager.GetItems<ImportItem>(XMLManager.Types.ITEMS);
 
 			try
 			{
@@ -71,8 +72,91 @@ namespace ZegroXMLService
 		{
 		}
 
+		private string ResolveElement(XDocument src, string elementName)
+		{
+			string x = null;
+			if (src.Descendants(elementName).Any())
+			{
+				var element = src.Descendants(elementName).Nodes().FirstOrDefault();
+				x = element != null ? element.ToString() : null;
+			}
+			return x;
+		}
+
+		private string ResolveAttribute(XDocument src, string elementName, string attrName)
+		{
+			string x = null;
+			if (src.Descendants(elementName).Any())
+			{
+				var element = src.Descendants(elementName).FirstOrDefault();
+				x = element != null ? (element as XElement).Attribute(attrName).Value : null;
+			
+			}
+			return x;
+		}
+
 		private void initializeMapper(IMapperConfigurationExpression cfg)
 		{
+			//cfg.CreateMap<XDocument, ImportItem>()
+			//	.ForMember(
+			//		dest => dest.DisplayCode,
+			//		options => options.ResolveUsing(src => { return Resolve(src, "DisplayCode"); })
+			//		//.formember(source => source.Element("DisplayCode")
+			//		//.Descendants("DisplayCode").Single())
+			//	);
+
+			//cfg.CreateMap<XDocument, ImportItem>()
+			//	.ForMember(
+			//		dest => dest.SolidisPK,
+			//		options => options.ResolveUsing(src => { return Resolve(src, "SolidisPK"); })
+			//);
+
+			//cfg.CreateMap<XDocument, ImportItem>()
+			//	.ForMember(
+			//		dest => dest.Description,
+			//		options => options.ResolveUsing(src => 
+			//			{
+			//				return Resolve(src, "Description");
+			//			})
+			//);
+			cfg.CreateMap<XDocument, ImportItem>()
+				.ForMember(
+					dest => dest.DefaultUnitOfMeasure,
+					options => options.ResolveUsing(src => {
+						//string x = null;
+						//if (src.Descendants("DefaultUnitOfMeasure.Code").Any())
+						//	x = src.Descendants("DefaultUnitOfMeasure.Code").Nodes().FirstOrDefault().ToString();
+						////if (src.Descendants("DefaultUnitOfMeasure.Code").Any())
+						////	x = (src.Descendants("DefaultUnitOfMeasure.Code").Nodes().Select(y => y.ToString()));
+						//return x;
+						return ResolveElement(src, "DefaultUnitOfMeasure.Code"); }))
+				.ForMember(
+					dest => dest.Description,
+					options => options.ResolveUsing(src => { return ResolveElement(src, "Description"); }))
+				.ForMember(
+					dest => dest.SolidisPK,
+					options => options.ResolveUsing(src => { return ResolveElement(src, "SolidisPK"); }))
+				.ForMember(
+					dest => dest.DisplayCode,
+					options => options.ResolveUsing(src => { return ResolveElement(src, "Displaycode"); }))
+				.ForMember(
+					dest => dest.DefaultTradeUnitOfMeasure,
+					options => options.ResolveUsing(src => { return ResolveElement(src, "DefaultTradeUnitOfMeasure.Code"); }))
+				.ForMember(
+					dest => dest.Action,
+					options => options.ResolveUsing(src => { return ResolveAttribute(src, "Item", "Action"); }))
+				.ForMember(
+					dest => dest.Validation,
+					options => options.ResolveUsing(src => { return ResolveAttribute(src, "Item", "Validation"); }))
+				;
+
+
+
+			//cfg.CreateMap<XDocument, ImportItem>()
+			//	.ForMember(
+			//		dest => dest.DefaultTradeUnitOfMeasure,
+			//		options => options.ResolveUsing<XElementResolver, string>(src => string.Concat(src.Descendants("DefaultTradeUnitOfMeasure").Nodes())));
+
 			cfg.CreateMap<rel, SelectListDTO>().ForMember(brwFrm => brwFrm.description, rel => rel.MapFrom(src => src.name1));
 			cfg.CreateMap<modmst, BrowseFormDTO>();
 			cfg.CreateMap<frmmst, BrowseFormDTO>();

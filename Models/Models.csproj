@@ -146,8 +146,11 @@
     <Compile Include="DTO\EncodedImage.cs" />
     <Compile Include="DTO\FinPaymentMethodDTO.cs" />
     <Compile Include="DTO\FinvatDTO.cs" />
+    <Compile Include="DTO\FtpDirItem.cs" />
     <Compile Include="DTO\FullNewsDTO.cs" />
     <Compile Include="DTO\ImageTypeDTO.cs" />
+    <Compile Include="DTO\ImportItem.cs" />
+    <Compile Include="DTO\ImportSpecPrice.cs" />
     <Compile Include="DTO\IntervalDTO.cs" />
     <Compile Include="DTO\ItemAssortmentRelationDTO.cs" />
     <Compile Include="DTO\ItemCrateDTO.cs" />

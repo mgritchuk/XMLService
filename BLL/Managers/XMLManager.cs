@@ -274,15 +274,15 @@ namespace BLL.Managers
 									}
 									break;
 								}
-							//case "ImportOrder":
-							//	{
-							//		(retrievedValues[i] as ImportSpecPrice).PriceItems = new List<ImportSpecPriceItem>();
-							//		foreach (XDocument xDoc in linesDocs[i])
-							//		{
-							//			(retrievedValues[i] as ImportSpecPrice).PriceItems.Add(AutoMapper.Mapper.Map<XDocument, ImportSpecPriceItem>(xDoc));
-							//		}
-							//		break;
-							//	}
+							case "ImportOrder":
+								{
+									(retrievedValues[i] as ImportOrder).OrderLinesList = new List<ImportOrderLine>();
+									foreach (XDocument xDoc in linesDocs[i])
+									{
+										(retrievedValues[i] as ImportOrder).OrderLinesList.Add(AutoMapper.Mapper.Map<XDocument, ImportOrderLine>(xDoc));
+									}
+									break;
+								}
 						}
 						i++;
 					}

@@ -48,7 +48,7 @@ namespace ZegroXMLService
 			}
 			
 			Mapper.Initialize(initializeMapper);
-			var retrievedValuesList = await manager.GetItems<ImportSpecPrice>(XMLManager.Types.SPECPRICE);
+			var retrievedValuesList = await manager.GetItems<ImportOrder>(XMLManager.Types.ORDER);
 
 			try
 			{
@@ -255,6 +255,36 @@ namespace ZegroXMLService
 						dest => dest.Type,
 						opt => opt.ResolveUsing(src => { return ResolveElement(src, "Type"); }));
 
+			cfg.CreateMap<XDocument, ImportOrderLine>()
+				.ForMember(
+						dest => dest.SolidisItemPK,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "SolidisItemPK"); }))
+				.ForMember(
+						dest => dest.ArticleCode,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "ArticleCode"); }))
+				.ForMember(
+						dest => dest.QuantityToDo,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "QuantityToDo"); }))
+				.ForMember(
+						dest => dest.AlternativeQuantityToDo,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "AlternativeQuantityToDo"); }))
+				.ForMember(
+						dest => dest.Notes,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "Notes"); }));
+
+			cfg.CreateMap<XDocument, ImportOrder>()
+				.ForMember(
+						dest => dest.SolidisPK,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "SolidisPK"); }))
+				.ForMember(
+						dest => dest.Displaycode,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "Displaycode"); }))
+				.ForMember(
+						dest => dest.Action,
+						opt => opt.ResolveUsing(src => { return ResolveAttribute(src, "Order", "Action"); }))
+				.ForMember(
+						dest => dest.Validation,
+						opt => opt.ResolveUsing(src => { return ResolveAttribute(src, "Order", "Validation"); }));
 			//cfg.CreateMap<XDocument, ImportItem>()
 			//	.ForMember(
 			//		dest => dest.DefaultTradeUnitOfMeasure,

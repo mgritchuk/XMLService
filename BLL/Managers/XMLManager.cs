@@ -95,6 +95,7 @@ namespace BLL.Managers
 					using (StringReader s = new StringReader(path))
 						xml = XDocument.Load(s);
 					List<XDocument> docs = new List<XDocument>();
+					List<List<XDocument>> linesDocs = new List<List<XDocument>>();
 					switch (typeof(T).Name.ToString())
 					{
 						case "ImportItem":
@@ -132,12 +133,74 @@ namespace BLL.Managers
 									}).ToList();
 								break;
 							}
+						case "ImportInvoice":
+							{
+								//linesDocs = xml.Descendants("Invoice").Elements("Invoicelines")
+								//	.SelectMany(x => x.Elements())
+								//	.Select(s =>
+								//	{
+								//		var tempDoc = new XDocument(xml);
+								//		var elementsToDelete = tempDoc.Elements("ImportData").Elements("Invoices").Elements("Invoice").Elements("Invoicelines").Elements("InvoiceLine").ToList();
+								//		foreach (XElement elem in elementsToDelete)
+								//		{
+								//			if (s.ToString() != elem.ToString())
+								//				elem.Remove();
+								//		}
+								//		return tempDoc;
+								//	}).ToList();
+
+								docs = xml.Descendants("Invoices")
+									.SelectMany(x => x.Elements())
+									.Select(s =>
+									{
+										var tempDoc = new XDocument(xml);
+										var elementsToDelete = tempDoc.Elements("ImportData").Elements("Invoices").Elements("Invoice").ToList();
+										foreach (XElement elem in elementsToDelete)
+										{
+											if (s.ToString() != elem.ToString())
+												elem.Remove();
+										}
+										/////
+										var invoiceLines = tempDoc.Descendants("Invoice").Elements("Invoicelines")
+										.SelectMany(x => x.Elements())
+										.Select(l =>
+										{
+											var linesDoc = new XDocument(l);
+											//var lineElementsToDelete = linesDoc.Elements("ImportData").Elements("Invoices").Elements("Invoice").Elements("Invoicelines").Elements("InvoiceLine").ToList();
+											//foreach (XElement elem in lineElementsToDelete)
+											//{
+											//	if (l.ToString() != elem.ToString())
+											//		elem.Remove();
+											//}
+											return linesDoc;
+										}).ToList();
+
+										///
+										linesDocs.Add(invoiceLines);
+										return tempDoc;
+
+									}).ToList();
+
+								break;
+							}
 						
 					}
 					List<T> retrievedValues = new List<T>();
+					int i = 0;
 					foreach (XDocument doc in docs)
 					{
+						
 						retrievedValues.Add(AutoMapper.Mapper.Map<XDocument, T>(doc));
+						
+						if (typeof(T).Name.ToString() == "ImportInvoice")
+						{
+							(retrievedValues[i] as ImportInvoice).InvoiceLines = new List<ImportInvoiceLine>();
+							foreach (XDocument xDoc in linesDocs[i])
+							{
+								(retrievedValues[i] as ImportInvoice).InvoiceLines.Add(AutoMapper.Mapper.Map<XDocument, ImportInvoiceLine>(xDoc));
+							}
+						}
+						i++;
 					}
 					importedItems.AddRange(retrievedValues);
 				}

@@ -43,7 +43,7 @@ namespace ZegroXMLService
 			}
 			
 			Mapper.Initialize(initializeMapper);
-			await manager.GetItems<ImportCustomer>(XMLManager.Types.CUSTOMERS);
+			var retrievedValuesList = await manager.GetItems<ImportInvoice>(XMLManager.Types.INVOICE);
 
 			try
 			{
@@ -169,6 +169,46 @@ namespace ZegroXMLService
 				.ForMember(
 						dest => dest.Street,
 						opt => opt.ResolveUsing(src => { return ResolveAttribute(src, "Customer", "Validation"); }));
+
+			cfg.CreateMap<XDocument, ImportInvoiceLine>()
+				.ForMember(
+						dest => dest.SolidisItemPK,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "SolidisItemPK"); }))
+				.ForMember(
+						dest => dest.SolidisProductPK,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "SolidisProductPK"); }))
+				.ForMember(
+						dest => dest.ArticleCode,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "ArticleCode"); }))
+				.ForMember(
+						dest => dest.QuantityToDo,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "QuantityToDo"); }))
+				.ForMember(
+						dest => dest.AlternativeQuantityToDo,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "AlternativeQuantityToDo"); }))
+				.ForMember(
+						dest => dest.ScannedBarcode,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "ScannedBarcode"); }));
+
+			cfg.CreateMap<XDocument, ImportInvoice>()
+				.ForMember(
+						dest => dest.Displaycode,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "Displaycode"); }))
+				.ForMember(
+						dest => dest.SolidisPK,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "SolidisPK"); }))
+				.ForMember(
+						dest => dest.InvoiceDate,
+						opt => opt.ResolveUsing(src => { DateTime x = new DateTime(); DateTime.TryParse(ResolveElement(src, "InvoiceDate"), out x); return x; }))
+				.ForMember(
+						dest => dest.SolidisCustomerPK,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "SolidisCustomerPK"); }))
+				.ForMember(
+						dest => dest.Action,
+						opt => opt.ResolveUsing(src => { return ResolveAttribute(src, "Invoice", "Action"); }))
+				.ForMember(
+						dest => dest.Validation,
+						opt => opt.ResolveUsing(src => { return ResolveAttribute(src, "Invoice", "Validation"); }));
 
 			//cfg.CreateMap<XDocument, ImportItem>()
 			//	.ForMember(

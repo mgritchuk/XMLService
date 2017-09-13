@@ -152,6 +152,8 @@
     <Compile Include="DTO\ImportCustomer.cs" />
     <Compile Include="DTO\ImportInvoice.cs" />
     <Compile Include="DTO\ImportItem.cs" />
+    <Compile Include="DTO\ImportOrder.cs" />
+    <Compile Include="DTO\ImportSpecPrice.cs" />
     <Compile Include="DTO\IntervalDTO.cs" />
     <Compile Include="DTO\ItemAssortmentRelationDTO.cs" />
     <Compile Include="DTO\ItemCrateDTO.cs" />

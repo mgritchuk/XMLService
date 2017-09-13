@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
@@ -22,6 +23,8 @@ namespace ZegroXMLService
 		public void onDebug()
 		{
 			OnStart(null);
+			//ServiceController x = new ServiceController("Service1");
+			//x.Start();
 		}
 
 		public XMLService()
@@ -31,6 +34,8 @@ namespace ZegroXMLService
 			CanPauseAndContinue = true;
 			AutoLog = true;
 			manager = new XMLManager(new MainContext());
+			
+			
 		}
 
 		protected override async void OnStart(string[] args)
@@ -43,7 +48,7 @@ namespace ZegroXMLService
 			}
 			
 			Mapper.Initialize(initializeMapper);
-			var retrievedValuesList = await manager.GetItems<ImportInvoice>(XMLManager.Types.INVOICE);
+			var retrievedValuesList = await manager.GetItems<ImportSpecPrice>(XMLManager.Types.SPECPRICE);
 
 			try
 			{
@@ -209,6 +214,46 @@ namespace ZegroXMLService
 				.ForMember(
 						dest => dest.Validation,
 						opt => opt.ResolveUsing(src => { return ResolveAttribute(src, "Invoice", "Validation"); }));
+
+			cfg.CreateMap<XDocument, ImportSpecPrice>()
+				.ForMember(
+						dest => dest.SolidisPK,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "SolidisPK"); }))
+				.ForMember(
+						dest => dest.Name,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "Name"); }))
+				.ForMember(
+						dest => dest.Action,
+						opt => opt.ResolveUsing(src => { return ResolveAttribute(src, "SpecPrice", "Action"); }))
+				.ForMember(
+						dest => dest.Validation,
+						opt => opt.ResolveUsing(src => { return ResolveAttribute(src, "SpecPrice", "Validation"); }));
+			cfg.CreateMap<XDocument, ImportSpecPriceItem>()
+				.ForMember(
+						dest => dest.Displaycode,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "Displaycode"); }))
+				.ForMember(
+						dest => dest.Description,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "Description"); }))
+				.ForMember(
+						dest => dest.SolidisPK,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "SolidisPK"); }))
+				.ForMember(
+						dest => dest.Price,
+						opt => opt.ResolveUsing(src => 
+						{
+							var val = ResolveElement(src, "Price");
+							return string.IsNullOrEmpty(val) ? 0 : double.Parse(val, CultureInfo.InvariantCulture);
+						}))
+				.ForMember(
+						dest => dest.StartDate,
+						opt => opt.ResolveUsing(src => { DateTime x = new DateTime(); DateTime.TryParse(ResolveElement(src, "StartDate"), out x); return x; }))
+				.ForMember(
+						dest => dest.EndDate,
+						opt => opt.ResolveUsing(src => { DateTime x = new DateTime(); DateTime.TryParse(ResolveElement(src, "EndDate"), out x); return x; }))
+				.ForMember(
+						dest => dest.Type,
+						opt => opt.ResolveUsing(src => { return ResolveElement(src, "Type"); }));
 
 			//cfg.CreateMap<XDocument, ImportItem>()
 			//	.ForMember(

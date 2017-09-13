@@ -22,7 +22,7 @@ namespace BLL.Managers
 		private const string userName = @"zegro\pasys";
 		private const string pwd = "MGkt8ETL";
 		#endregion
-		public enum Types { ITEMS, ORDER, SPECPRISE, INVOICE, CUSTOMERS };
+		public enum Types { ITEMS, ORDER, SPECPRICE, INVOICE, CUSTOMERS };
 		public XMLManager(MainContext context) : base(context)
 		{
 		}
@@ -183,7 +183,69 @@ namespace BLL.Managers
 
 								break;
 							}
-						
+						case "ImportSpecPrice":
+							{
+								docs = xml.Descendants("SpecPrices")
+									.SelectMany(x => x.Elements())
+									.Select(s =>
+									{
+										var tempDoc = new XDocument(xml);
+										var elementsToDelete = tempDoc.Elements("ImportData").Elements("SpecPrices").Elements("SpecPrice").ToList();
+										foreach (XElement elem in elementsToDelete)
+										{
+											if (s.ToString() != elem.ToString())
+												elem.Remove();
+										}
+										/////
+										var priceLines = tempDoc.Descendants("SpecPrice").Elements("Items")
+										.SelectMany(x => x.Elements())
+										.Select(l =>
+										{
+											var linesDoc = new XDocument(l);
+											
+											return linesDoc;
+										}).ToList();
+
+										///
+										linesDocs.Add(priceLines);
+										return tempDoc;
+
+									}).ToList();
+
+								break;
+							}
+						case "ImportOrder":
+							{
+								docs = xml.Descendants("Orders")
+									.SelectMany(x => x.Elements())
+									.Select(s =>
+									{
+										var tempDoc = new XDocument(xml);
+										var elementsToDelete = tempDoc.Elements("ImportData").Elements("Orders").Elements("Order").ToList();
+										foreach (XElement elem in elementsToDelete)
+										{
+											if (s.ToString() != elem.ToString())
+												elem.Remove();
+										}
+										/////
+										var orderLines = tempDoc.Descendants("Order").Elements("OrderLines")
+										.SelectMany(x => x.Elements())
+										.Select(l =>
+										{
+											var linesDoc = new XDocument(l);
+
+											return linesDoc;
+										}).ToList();
+
+										///
+										linesDocs.Add(orderLines);
+										return tempDoc;
+
+									}).ToList();
+
+								break;
+							}
+
 					}
 					List<T> retrievedValues = new List<T>();
 					int i = 0;
@@ -192,13 +254,35 @@ namespace BLL.Managers
 						
 						retrievedValues.Add(AutoMapper.Mapper.Map<XDocument, T>(doc));
 						
-						if (typeof(T).Name.ToString() == "ImportInvoice")
+						switch (typeof(T).Name.ToString())
 						{
-							(retrievedValues[i] as ImportInvoice).InvoiceLines = new List<ImportInvoiceLine>();
-							foreach (XDocument xDoc in linesDocs[i])
-							{
-								(retrievedValues[i] as ImportInvoice).InvoiceLines.Add(AutoMapper.Mapper.Map<XDocument, ImportInvoiceLine>(xDoc));
-							}
+							case "ImportInvoice":
+								{
+									(retrievedValues[i] as ImportInvoice).InvoiceLines = new List<ImportInvoiceLine>();
+									foreach (XDocument xDoc in linesDocs[i])
+									{
+										(retrievedValues[i] as ImportInvoice).InvoiceLines.Add(AutoMapper.Mapper.Map<XDocument, ImportInvoiceLine>(xDoc));
+									}
+									break;
+								}
+							case "ImportSpecPrice":
+								{
+									(retrievedValues[i] as ImportSpecPrice).PriceItems = new List<ImportSpecPriceItem>();
+									foreach (XDocument xDoc in linesDocs[i])
+									{
+										(retrievedValues[i] as ImportSpecPrice).PriceItems.Add(AutoMapper.Mapper.Map<XDocument, ImportSpecPriceItem>(xDoc));
+									}
+									break;
+								}
+							//case "ImportOrder":
+							//	{
+							//		(retrievedValues[i] as ImportSpecPrice).PriceItems = new List<ImportSpecPriceItem>();
+							//		foreach (XDocument xDoc in linesDocs[i])
+							//		{
+							//			(retrievedValues[i] as ImportSpecPrice).PriceItems.Add(AutoMapper.Mapper.Map<XDocument, ImportSpecPriceItem>(xDoc));
+							//		}
+							//		break;
+							//	}
 						}
 						i++;
 					}
@@ -207,7 +291,7 @@ namespace BLL.Managers
 				catch (WebException ex)
 				{	}
 			}
-			return importedItems;
+	return importedItems;
 		}
 	
 	}

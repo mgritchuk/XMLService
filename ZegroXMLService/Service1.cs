@@ -52,11 +52,11 @@ namespace ZegroXMLService
 
 			try
 			{
-				var testData = await manager.GetAll<imgtype, ImageTypeDTO>();
+				//var testData = await manager.GetAll<imgtype, ImageTypeDTO>();
 				using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
 				{
-					writer.WriteLine(String.Format("service start {0}, {1}",
-						DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), testData.FirstOrDefault().ad));
+					writer.WriteLine(String.Format("service start {0} ",
+						DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss")));
 					writer.Flush();
 				}
 			}

@@ -18,9 +18,7 @@ namespace BLL.Managers
 		
 
 		#region FTP credentials
-		private const string host = "ftp://90.145.96.196/ERPToPasys";
-		private const string userName = @"zegro\pasys";
-		private const string pwd = "MGkt8ETL";
+		
 		#endregion
 		public enum Types { ITEMS, ORDER, SPECPRICE, INVOICE, CUSTOMERS };
 		public XMLManager(MainContext context) : base(context)
@@ -94,6 +92,9 @@ namespace BLL.Managers
 
 					using (StringReader s = new StringReader(path))
 						xml = XDocument.Load(s);
+
+					SaveImportedXML(xml, file.Name);
+
 					List<XDocument> docs = new List<XDocument>();
 					List<List<XDocument>> linesDocs = new List<List<XDocument>>();
 					switch (typeof(T).Name.ToString())
@@ -293,6 +294,15 @@ namespace BLL.Managers
 			}
 	return importedItems;
 		}
-	
+
+
+		private void SaveImportedXML(XDocument doc, string fileName)
+		{
+			string now = DateTime.UtcNow.Date.ToShortDateString();
+			string path = "C:\\ImportedXML\\" + now + "\\";
+			if (!Directory.Exists(path))
+				Directory.CreateDirectory(path);
+			doc.Save(path + fileName);
+		}
 	}
 }

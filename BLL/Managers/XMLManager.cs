@@ -93,7 +93,7 @@ namespace BLL.Managers
 					using (StringReader s = new StringReader(path))
 						xml = XDocument.Load(s);
 
-					SaveImportedXML(xml, file.Name);
+					SaveImportedXML(xml, file.Name, true);
 
 					List<XDocument> docs = new List<XDocument>();
 					List<List<XDocument>> linesDocs = new List<List<XDocument>>();
@@ -296,7 +296,7 @@ namespace BLL.Managers
 		}
 
 
-		private void SaveImportedXML(XDocument doc, string fileName)
+		private void SaveImportedXML(XDocument doc, string fileName, bool removeOriginal)
 		{
 			string now = DateTime.UtcNow.Date.ToShortDateString();
 			string path = "C:\\ImportedXML\\" + now + "\\";

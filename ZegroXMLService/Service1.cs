@@ -23,6 +23,7 @@ namespace ZegroXMLService
 		public void onDebug()
 		{
 			OnStart(null);
+			
 			//ServiceController x = new ServiceController("Service1");
 			//x.Start();
 		}
@@ -48,7 +49,7 @@ namespace ZegroXMLService
 			}
 			
 			Mapper.Initialize(initializeMapper);
-			var retrievedValuesList = await manager.GetItems<ImportOrder>(XMLManager.Types.ORDER);
+			var retrievedValuesList = await manager.GetItems<ImportItem>(XMLManager.Types.ITEMS);
 
 			try
 			{

@@ -10,16 +10,18 @@ using System.Xml.Linq;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace BLL.Managers
 {
 	public class XMLManager : BaseManager, IXMLManager
 	{
-		
+
 
 		#region FTP credentials
 		
 		#endregion
+		private readonly Encoding noByteOrderMark = new UTF8Encoding(false);
 		public enum Types { ITEMS, ORDER, SPECPRICE, INVOICE, CUSTOMERS };
 		public XMLManager(MainContext context) : base(context)
 		{
@@ -80,23 +82,35 @@ namespace BLL.Managers
 			foreach (FtpDirItem file in files)
 			{
 
-
 				try
 				{
 
 					byte[] newFileData = await webRequest.DownloadDataTaskAsync(new Uri(host + '/' + file.Name));
 
 					XDocument xml = new XDocument();
+
 					string path = System.Text.Encoding.UTF8.GetString(newFileData);
+
+					//var cut = path.Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "");
+					//if(cut != path)
+					//{
+
+					//}
+					//xml = XDocument.Parse(cut);
+					
+					
 					//path = "<ImportData>  <Items>  <Item Action=\"InsertOrUpdate\" Validation=\"None\"><Displaycode> 3119.668.97 </Displaycode> <SolidisPK> 678 </SolidisPK> <Description> Le Capllin Filet Geportioneerd </Description>	<DefaultUnitOfMeasure.Code> KILO </DefaultUnitOfMeasure.Code><DefaultTradeUnitOfMeasure.Code/> </Item>   <Item Action=\"InsertOrUpdate\" Validation=\"None\">	  <Displaycode> 3119.668.96 </Displaycode> <SolidisPK> 1740753 </SolidisPK>		<Description> Le Capellin Filet Geportioneerd </Description>  	<DefaultUnitOfMeasure.Code> KG </DefaultUnitOfMeasure.Code>	<DefaultTradeUnitOfMeasure.Code/> </Item ></Items> </ImportData>";
 
 					using (StringReader s = new StringReader(path))
+					{
 						xml = XDocument.Load(s);
+					}
 
 					SaveImportedXML(xml, file.Name);
 
 					List<XDocument> docs = new List<XDocument>();
 					List<List<XDocument>> linesDocs = new List<List<XDocument>>();
+					#region parse
 					switch (typeof(T).Name.ToString())
 					{
 						case "ImportItem":
@@ -288,11 +302,12 @@ namespace BLL.Managers
 						i++;
 					}
 					importedItems.AddRange(retrievedValues);
+#endregion
 				}
 				catch (WebException ex)
 				{	}
 			}
-	return importedItems;
+			return importedItems;
 		}
 
 
@@ -302,7 +317,11 @@ namespace BLL.Managers
 			string path = "C:\\ImportedXML\\" + now + "\\";
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
-			doc.Save(path + fileName);
+			XmlWriterSettings settings = new XmlWriterSettings { OmitXmlDeclaration = true, Indent = true, Encoding = noByteOrderMark };
+			using (XmlWriter writer = XmlWriter.Create(path + fileName, settings))
+			
+
+			doc.Save(writer);
 		}
 	}
 }

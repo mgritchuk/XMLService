@@ -40,12 +40,7 @@ namespace ZegroXMLService
 
 		protected override async void OnStart(string[] args)
 		{
-			using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
-			{
-				writer.WriteLine(String.Format("service start {0}",
-					DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss")));
-				writer.Flush();
-			}
+			
 			
 			Mapper.Initialize(initializeMapper);
 			var retrievedValuesList = await manager.GetItems<ImportOrder>(XMLManager.Types.ORDER);
@@ -75,6 +70,12 @@ namespace ZegroXMLService
 
 		protected override void OnStop()
 		{
+			using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
+			{
+				writer.WriteLine(String.Format("service stoped {0}",
+					DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss")));
+				writer.Flush();
+			}
 		}
 
 		private string ResolveElement(XDocument src, string elementName)

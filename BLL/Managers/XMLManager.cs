@@ -15,7 +15,7 @@ namespace BLL.Managers
 {
 	public class XMLManager : BaseManager, IXMLManager
 	{
-		
+
 
 		#region FTP credentials
 		

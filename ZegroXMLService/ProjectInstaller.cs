@@ -20,6 +20,7 @@ namespace ZegroXMLService
         private void serviceInstaller1_AfterInstall(object sender, InstallEventArgs e)
         {
             new ServiceController(serviceInstaller1.ServiceName).Start();
+
         }
     }
 }

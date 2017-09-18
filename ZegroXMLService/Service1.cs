@@ -76,6 +76,12 @@ namespace ZegroXMLService
 
 		protected override void OnStop()
 		{
+			using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
+			{
+				writer.WriteLine(String.Format("service stoped {0}",
+				DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss")));
+				writer.Flush();
+			}
 		}
 
 		private string ResolveElement(XDocument src, string elementName)

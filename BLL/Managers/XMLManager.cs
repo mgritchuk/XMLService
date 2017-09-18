@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace BLL.Managers
 {
@@ -20,6 +21,7 @@ namespace BLL.Managers
 		#region FTP credentials
 		
 		#endregion
+		private readonly Encoding noByteOrderMark = new UTF8Encoding(false);
 		public enum Types { ITEMS, ORDER, SPECPRICE, INVOICE, CUSTOMERS };
 		public XMLManager(MainContext context) : base(context)
 		{
@@ -302,7 +304,12 @@ namespace BLL.Managers
 			string path = "C:\\ImportedXML\\" + now + "\\";
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
-			doc.Save(path + fileName);
+			//doc.Save(path + fileName);
+			XmlWriterSettings settings = new XmlWriterSettings { OmitXmlDeclaration = true, Indent = true, Encoding = noByteOrderMark };
+			using (XmlWriter writer = XmlWriter.Create(path + fileName, settings))
+			{
+				doc.Save(writer);
+			}
 		}
 	}
 }

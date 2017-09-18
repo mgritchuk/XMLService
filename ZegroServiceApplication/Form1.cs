@@ -23,10 +23,17 @@ namespace ZegroServiceApplication
 		{
 			//new ServiceController("").Start();
 			ServiceController controller = new ServiceController("ZegroService");
-			if (controller != null && controller.Status.ToString() != "Running")
+			if (controller != null && controller.Status != ServiceControllerStatus.Running)
 			{
+				
 				controller.Start();
+				StartService.Text = "Stop service";
 
+			}
+			else
+			{
+				controller.Stop();
+				StartService.Text = "Start service";
 			}
 		}
 	}

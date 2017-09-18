@@ -33,7 +33,7 @@
 			// 
 			// StartService
 			// 
-			this.StartService.Location = new System.Drawing.Point(85, 71);
+			this.StartService.Location = new System.Drawing.Point(98, 94);
 			this.StartService.Name = "StartService";
 			this.StartService.Size = new System.Drawing.Size(75, 23);
 			this.StartService.TabIndex = 0;

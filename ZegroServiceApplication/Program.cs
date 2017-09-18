@@ -24,17 +24,18 @@ namespace ZegroServiceApplication
 	public class AppContext : ApplicationContext
 	{
 		Form1 configWindow = new Form1();
-		private NotifyIcon trayIcon = new NotifyIcon();
+		public NotifyIcon trayIcon { get; set; }
+		//private NotifyIcon trayIcon = new NotifyIcon();
 
 		public AppContext()
         {
             MenuItem confMenuItem = new MenuItem("Configuration", new EventHandler(ShowConfig));
             MenuItem exitMenuItem = new MenuItem("Exit", new EventHandler(Exit));
 
-
+			trayIcon = new NotifyIcon();
 			trayIcon.ContextMenu = new ContextMenu(new MenuItem[] { confMenuItem, exitMenuItem });
 			trayIcon.Visible = true;
-			Bitmap btmp = Properties.Resources.AppIcon;
+			Bitmap btmp = Properties.Resources.InActive;
 			IntPtr hicon = btmp.GetHicon();
 			Icon icon = Icon.FromHandle(hicon);
 			trayIcon.Icon = icon;

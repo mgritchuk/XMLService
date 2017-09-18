@@ -63,9 +63,19 @@ namespace ZegroServiceApplication.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap AppIcon {
+        internal static System.Drawing.Bitmap Active {
             get {
-                object obj = ResourceManager.GetObject("AppIcon", resourceCulture);
+                object obj = ResourceManager.GetObject("Active", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap InActive {
+            get {
+                object obj = ResourceManager.GetObject("InActive", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

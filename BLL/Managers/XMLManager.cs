@@ -17,10 +17,10 @@ namespace BLL.Managers
 	{
 
 
-        #region FTP credentials
-        
-        #endregion
-        public enum Types { ITEMS, ORDER, SPECPRICE, INVOICE, CUSTOMERS };
+		#region FTP credentials
+		
+		#endregion
+		public enum Types { ITEMS, ORDER, SPECPRICE, INVOICE, CUSTOMERS };
 		public XMLManager(MainContext context) : base(context)
 		{
 		}

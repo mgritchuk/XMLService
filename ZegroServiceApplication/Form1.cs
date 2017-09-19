@@ -21,6 +21,7 @@ namespace ZegroServiceApplication
 
 		private void StartService_Click(object sender, EventArgs e)
 		{
+			//NotifyIcon 
 			//new ServiceController("").Start();
 			ServiceController controller = new ServiceController("ZegroService");
 			if (controller != null && controller.Status != ServiceControllerStatus.Running)

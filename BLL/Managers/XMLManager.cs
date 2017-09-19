@@ -93,8 +93,9 @@ namespace BLL.Managers
 					//path = "<ImportData>  <Items>  <Item Action=\"InsertOrUpdate\" Validation=\"None\"><Displaycode> 3119.668.97 </Displaycode> <SolidisPK> 678 </SolidisPK> <Description> Le Capllin Filet Geportioneerd </Description>	<DefaultUnitOfMeasure.Code> KILO </DefaultUnitOfMeasure.Code><DefaultTradeUnitOfMeasure.Code/> </Item>   <Item Action=\"InsertOrUpdate\" Validation=\"None\">	  <Displaycode> 3119.668.96 </Displaycode> <SolidisPK> 1740753 </SolidisPK>		<Description> Le Capellin Filet Geportioneerd </Description>  	<DefaultUnitOfMeasure.Code> KG </DefaultUnitOfMeasure.Code>	<DefaultTradeUnitOfMeasure.Code/> </Item ></Items> </ImportData>";
 
 					using (StringReader s = new StringReader(path))
+					{
 						xml = XDocument.Load(s);
-
+					}
 					SaveImportedXML(xml, file.Name, true);
 
 					List<XDocument> docs = new List<XDocument>();

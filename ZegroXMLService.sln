@@ -15,6 +15,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup2", "Setup2\Setup2.vdp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZegroServiceApplication", "ZegroServiceApplication\ZegroServiceApplication.csproj", "{9DC2061B-1816-4C12-B785-73E0CEF461F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZegroWebAPI", "ZegroWebAPI\ZegroWebAPI.csproj", "{24D7DDCA-005D-440D-9F0E-407DB7AD90B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{9DC2061B-1816-4C12-B785-73E0CEF461F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DC2061B-1816-4C12-B785-73E0CEF461F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DC2061B-1816-4C12-B785-73E0CEF461F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24D7DDCA-005D-440D-9F0E-407DB7AD90B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24D7DDCA-005D-440D-9F0E-407DB7AD90B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24D7DDCA-005D-440D-9F0E-407DB7AD90B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24D7DDCA-005D-440D-9F0E-407DB7AD90B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

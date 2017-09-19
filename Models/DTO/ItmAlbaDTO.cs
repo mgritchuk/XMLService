@@ -14,6 +14,6 @@ namespace Models.DTO
 
 		public string itm_ad { get; set; }
 
-		public string itmalbamst_ad { get; set; }
+		//public string itmalbamst_ad { get; set; }
 	}
 }

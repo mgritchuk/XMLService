@@ -89,9 +89,11 @@ namespace Models.DB
 		public virtual DbSet<tsptour> tsptour { get; set; }
 		public virtual DbSet<tspvehicle> tspvehicle { get; set; }
 		public virtual DbSet<tspvehicleposlog> tspvehicleposlog { get; set; }
+		public virtual DbSet<importedItems> importedItems { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
+			Database.SetInitializer<MainContext>(null);
 			modelBuilder.Entity<cmp>()
 				.HasMany(e => e.les_absence)
 				.WithOptional(e => e.cmp)

@@ -62,6 +62,7 @@
     <Compile Include="DB\frmmod.cs" />
     <Compile Include="DB\frmmst.cs" />
     <Compile Include="DB\imgtype.cs" />
+    <Compile Include="DB\importedItems.cs" />
     <Compile Include="DB\itm.cs" />
     <Compile Include="DB\itmalba.cs" />
     <Compile Include="DB\itmalbamst.cs" />

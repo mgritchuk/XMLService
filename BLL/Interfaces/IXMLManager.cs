@@ -12,5 +12,7 @@ namespace BLL.Interfaces
 	{
 		
 		Task<IEnumerable<T>> GetItems<T>(Types type) where T : class;
+		List<ItmAlbaDTO> GetAllItemAllergens();
+		void InsertItem(ImportItem item);
 	}
 }

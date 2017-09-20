@@ -21,12 +21,14 @@ namespace ZegroWebAPI.Controllers
 		}
 
 
-
+		//items
 		[HttpPost]
 		public async Task<IHttpActionResult> PostItem(ImportItem item)
 		{
-			
-			return Json(await manager.Add<importedItems, ImportItem>(item, (db, dto) => dto.SolidisPK = db.SolidisPK));
+			var duplicate = await manager.Get<importedItems, ImportItem>(item.SolidisPK);
+			if(duplicate == null)
+				return Json(await manager.Add<importedItems, ImportItem>(item, (db, dto) => dto.SolidisPK = db.SolidisPK));
+			return Json(false);
 			
 		}
 
@@ -58,5 +60,57 @@ namespace ZegroWebAPI.Controllers
 			}
 			return Ok();
 		}
-    }
+
+		//orders
+		[HttpPost]
+		public async Task<IHttpActionResult> PostOrder(ImportOrder item)
+		{
+			var duplicate = await manager.Get<importedOrder, ImportOrder>(item.SolidisPK);
+			if (duplicate == null)
+				return Json(await manager.Add<importedOrder, ImportOrder>(item, (db, dto) => dto.SolidisPK = db.SolidisPK));
+			return Json(false);
+
+		}
+
+		[HttpPost]
+		public async Task<IHttpActionResult> PostOrders(IEnumerable<ImportOrder> items)
+		{
+			List<ImportOrder> res = new List<ImportOrder>();
+			foreach (ImportOrder item in items)
+			{
+				res.Add(await manager.Add<importedOrder, ImportOrder>(item, (db, dto) => dto.SolidisPK = db.SolidisPK));
+
+			}
+			return Json(res);
+		}
+
+		[HttpPut]
+		public async Task<IHttpActionResult> PutOrder(ImportOrder item)
+		{
+			await manager.Update<importedOrder, ImportOrder>(item, i => i.SolidisPK);
+			return Ok();
+		}
+
+		[HttpPut]
+		public async Task<IHttpActionResult> PutOrders(IEnumerable<ImportOrder> items)
+		{
+			foreach (ImportOrder item in items)
+			{
+				await manager.Update<importedOrder, ImportOrder>(item, i => i.SolidisPK);
+			}
+			return Ok();
+		}
+
+		//orderlines
+		[HttpPost]
+		public async Task<IHttpActionResult> PostOrderLine(ImportOrderLine item)
+		{
+			var duplicate = await manager.Get<importedOrderLine, ImportOrderLine>(item.SolidisItemPK);
+			if (duplicate == null)
+				
+				return Json(await manager.Add<importedOrderLine, ImportOrderLine>(item, (db, dto) => dto.orderSolidisPK = db.orderSolidisPK));
+			return Json(false);
+
+		}
+	}
 }

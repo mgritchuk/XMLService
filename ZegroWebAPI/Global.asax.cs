@@ -37,6 +37,10 @@ namespace ZegroWebAPI
 
 			cfg.CreateMap<ImportItem, importedItems>();
 			cfg.CreateMap<importedItems, ImportItem>();
+			cfg.CreateMap<importedOrder, ImportOrder>();
+			cfg.CreateMap<ImportOrder, importedOrder>();
+			cfg.CreateMap<ImportOrderLine, importedOrderLine>();
+			cfg.CreateMap<importedOrderLine, ImportOrderLine>();
 		}
 
 

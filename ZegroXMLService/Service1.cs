@@ -57,12 +57,13 @@ namespace ZegroXMLService
 			
 			Mapper.Initialize(initializeMapper);
 			var retrievedItemsList = await manager.GetItems<ImportItem>(XMLManager.Types.ITEMS);
-			//foreach (ImportItem item in retrievedItemsList)
-			//{
-			//	await man.Add<importedItems, ImportItem>(item, (db, dto) => dto.SolidisPK = db.SolidisPK);
-			//}
-			//List<ImportItem> nodupes = (retrievedItemsList as List<ImportItem>).Distinct().ToList();
-			ThreadPool.QueueUserWorkItem(async i => await DoPosts(retrievedItemsList));
+		
+			ThreadPool.QueueUserWorkItem(async i => await DoPostsImportItem(retrievedItemsList));
+
+			var retrievedOrders = await manager.GetItems<ImportOrder>(XMLManager.Types.ORDER);
+			ThreadPool.QueueUserWorkItem(async i => await DoPostsImportOrders(retrievedOrders));
+
+
 			//using (HttpClient client = new HttpClient())
 			//{
 			//	client.BaseAddress = apiUri;
@@ -103,7 +104,7 @@ namespace ZegroXMLService
 			//scheduler start
 		}
 
-		public async Task DoPosts(IEnumerable<ImportItem> retrievedItemsList)
+		public async Task DoPostsImportItem(IEnumerable<ImportItem> retrievedItemsList)
 		{
 			using (HttpClient client = new HttpClient())
 			{
@@ -118,6 +119,31 @@ namespace ZegroXMLService
 					if (response.IsSuccessStatusCode)
 					{
 						//rm origin
+					}
+				}
+			}
+		}
+
+		public async Task DoPostsImportOrders(IEnumerable<ImportOrder> retrievedItemsList)
+		{
+			using (HttpClient client = new HttpClient())
+			{
+				client.BaseAddress = apiUri;
+				client.DefaultRequestHeaders.Accept.Clear();
+				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+				foreach (ImportOrder item in retrievedItemsList)
+				{
+					var ordlines = item.OrderLinesList;
+					StringContent content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
+					var response = await client.PostAsync("api/ImportedData/P", content);
+					if (response.IsSuccessStatusCode)
+					{
+						StringContent orderContent = new StringContent(JsonConvert.SerializeObject(ordlines), Encoding.UTF8, "application/json");
+						var resp = await client.PostAsync("", content);
+						if(resp.IsSuccessStatusCode)
+						{
+							//
+						}
 					}
 				}
 			}

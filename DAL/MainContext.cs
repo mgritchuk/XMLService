@@ -91,6 +91,8 @@ namespace DAL
 		public virtual DbSet<tspvehicle> tspvehicle { get; set; }
 		public virtual DbSet<tspvehicleposlog> tspvehicleposlog { get; set; }
 		public virtual DbSet<importedItems> importedItems { get; set; }
+		public virtual DbSet<importedOrder> importedOrders { get; set; }
+		public virtual DbSet<importedOrderLine> importedOrderLines { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{

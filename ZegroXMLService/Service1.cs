@@ -16,6 +16,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.ServiceProcess;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -23,8 +24,9 @@ namespace ZegroXMLService
 {
 	public partial class XMLService : ServiceBase
 	{
-		private readonly Uri apiUri = new Uri("http://localhost:54725");
+		private readonly Uri apiUri = new Uri("http://localhost:54725/");
 		private readonly XMLManager manager;
+	
 		public void onDebug()
 		{
 			OnStart(null);
@@ -43,7 +45,7 @@ namespace ZegroXMLService
 			
 			
 		}
-
+		//private CancellationTokenSource cancleToken;
 		protected override async void OnStart(string[] args)
 		{
 			using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
@@ -55,22 +57,28 @@ namespace ZegroXMLService
 			
 			Mapper.Initialize(initializeMapper);
 			var retrievedItemsList = await manager.GetItems<ImportItem>(XMLManager.Types.ITEMS);
+			//foreach (ImportItem item in retrievedItemsList)
+			//{
+			//	await man.Add<importedItems, ImportItem>(item, (db, dto) => dto.SolidisPK = db.SolidisPK);
+			//}
+			//List<ImportItem> nodupes = (retrievedItemsList as List<ImportItem>).Distinct().ToList();
+			ThreadPool.QueueUserWorkItem(async i => await DoPosts(retrievedItemsList));
+			//using (HttpClient client = new HttpClient())
+			//{
+			//	client.BaseAddress = apiUri;
+			//	client.DefaultRequestHeaders.Accept.Clear();
+			//	client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+			//	foreach (ImportItem item in retrievedItemsList)
+			//	{
 
-			using (HttpClient client = new HttpClient())
-			{
-				client.BaseAddress = apiUri;
-				client.DefaultRequestHeaders.Accept.Clear();
-				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-				foreach (ImportItem item in retrievedItemsList)
-				{
-					StringContent content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
-					var response = await client.PostAsync("api/ImportedDataController/PostItem", content);
-					if (response.IsSuccessStatusCode)
-					{
-						//rm origin
-					}
-				}
-			}
+			//		StringContent content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
+			//		var response = await client.PostAsync("api/ImportedData/PostItem", content);
+			//		if (response.IsSuccessStatusCode)
+			//		{
+			//			//rm origin
+			//		}
+			//	}
+			//}
 
 			try
 			{
@@ -93,6 +101,26 @@ namespace ZegroXMLService
 			}
 			
 			//scheduler start
+		}
+
+		public async Task DoPosts(IEnumerable<ImportItem> retrievedItemsList)
+		{
+			using (HttpClient client = new HttpClient())
+			{
+				client.BaseAddress = apiUri;
+				client.DefaultRequestHeaders.Accept.Clear();
+				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+				foreach (ImportItem item in retrievedItemsList)
+				{
+
+					StringContent content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
+					var response = await client.PostAsync("api/ImportedData/PostItem", content);
+					if (response.IsSuccessStatusCode)
+					{
+						//rm origin
+					}
+				}
+			}
 		}
 
 		protected override void OnStop()

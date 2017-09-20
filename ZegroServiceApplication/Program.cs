@@ -23,7 +23,7 @@ namespace ZegroServiceApplication
 
 	public class AppContext : ApplicationContext
 	{
-		Form1 configWindow = new Form1();
+		ZegroService configWindow = new ZegroService();
 		public NotifyIcon trayIcon { get; set; }
 		//private NotifyIcon trayIcon = new NotifyIcon();
 

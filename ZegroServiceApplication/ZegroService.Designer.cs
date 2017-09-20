@@ -1,6 +1,6 @@
 ﻿namespace ZegroServiceApplication
 {
-    partial class Form1
+    partial class ZegroService
     {
         /// <summary>
         /// Required designer variable.
@@ -33,22 +33,22 @@
 			// 
 			// StartService
 			// 
-			this.StartService.Location = new System.Drawing.Point(98, 94);
+			this.StartService.Location = new System.Drawing.Point(91, 41);
 			this.StartService.Name = "StartService";
-			this.StartService.Size = new System.Drawing.Size(75, 23);
+			this.StartService.Size = new System.Drawing.Size(103, 35);
 			this.StartService.TabIndex = 0;
 			this.StartService.Text = "Start service";
 			this.StartService.UseVisualStyleBackColor = true;
 			this.StartService.Click += new System.EventHandler(this.StartService_Click);
 			// 
-			// Form1
+			// ZegroService
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(284, 261);
+			this.ClientSize = new System.Drawing.Size(298, 135);
 			this.Controls.Add(this.StartService);
-			this.Name = "Form1";
-			this.Text = "Form1";
+			this.Name = "ZegroService";
+			this.Text = "Zegro Service";
 			this.ResumeLayout(false);
 
         }

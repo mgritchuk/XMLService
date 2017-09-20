@@ -21,6 +21,7 @@ namespace Models.DTO
 		public string Displaycode { get; set; }
 		public string Description { get; set; }
 		public string SolidisPK { get; set; }
+		public string SpecPriceSolidisPK { get; set; }
 		public double Price { get; set; }
 		public DateTime StartDate { get; set; }
 		public DateTime EndDate { get; set; }

@@ -80,6 +80,8 @@
     <Compile Include="DB\importedItems.cs" />
     <Compile Include="DB\importedOrder.cs" />
     <Compile Include="DB\importedOrderLine.cs" />
+    <Compile Include="DB\importedSpecPrice.cs" />
+    <Compile Include="DB\importedSpecPriceItem.cs" />
     <Compile Include="DB\itm.cs" />
     <Compile Include="DB\itmalba.cs" />
     <Compile Include="DB\itmalbamst.cs" />

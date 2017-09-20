@@ -48,8 +48,8 @@ namespace ZegroWebAPI
 			cfg.CreateMap<importedCustomer, ImportCustomer>();
 			cfg.CreateMap<ImportCustomer, importedCustomer>();
 
-			cfg.CreateMap<importedInvoice, importedInvoice>();
-			cfg.CreateMap<importedInvoice, importedInvoice>();
+			cfg.CreateMap<ImportInvoice, importedInvoice>();
+			cfg.CreateMap<importedInvoice, ImportInvoice>();
 			cfg.CreateMap<importedInvoiceLine, ImportInvoiceLine>();
 			cfg.CreateMap<ImportInvoiceLine, importedInvoiceLine>();
 		}

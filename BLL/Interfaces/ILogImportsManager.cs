@@ -9,6 +9,8 @@ namespace BLL.Interfaces
 {
 	public interface ILogImportsManager : IBaseManager
 	{
-		
+		void InsertInvoiceLine(ImportInvoiceLine line);
+
+
 	}
 }

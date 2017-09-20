@@ -22,6 +22,7 @@ namespace Models.DTO
 	public class ImportInvoiceLine
 	{
 		public ImportInvoiceLine() { }
+		public string InvoiceSolidisPK { get; set; }
 		public string SolidisItemPK { get; set; }
 		public string SolidisProductPK { get; set; }
 		public string ArticleCode { get; set; }

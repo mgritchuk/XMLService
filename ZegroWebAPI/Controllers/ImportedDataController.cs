@@ -144,5 +144,24 @@ namespace ZegroWebAPI.Controllers
 				return Json(await manager.Add<importedCustomer, ImportCustomer>(item, (db, dto) => dto.SolidisPK = db.SolidisPK));
 			return Json(false);
 		}
+
+		//invoice line
+		[HttpPost]
+		public async Task<IHttpActionResult> PostInvoiceLine(ImportInvoiceLine item)
+		{
+			manager.InsertInvoiceLine(item);
+			return Ok();
+		}
+
+		//invoice
+		[HttpPost]
+		public async Task<IHttpActionResult> PostInvoice(ImportInvoice item)
+		{
+			var duplicate = await manager.Get<importedInvoice, ImportInvoice>(item.SolidisPK);
+			if (duplicate == null)
+
+				return Json(await manager.Add<importedInvoice, ImportInvoice>(item, (db, dto) => dto.SolidisPK = db.SolidisPK));
+			return Json(false);
+		}
 	}
 }

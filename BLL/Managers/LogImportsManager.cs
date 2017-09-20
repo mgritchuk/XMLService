@@ -15,7 +15,16 @@ namespace BLL.Managers
 	{
 		public LogImportsManager(MainContext context) : base(context) { }
 		
-	
+		public void InsertInvoiceLine(ImportInvoiceLine line)
+		{
+			var mapped = AutoMapper.Mapper.Map<ImportInvoiceLine, importedInvoiceLine>(line);
+			var duplicate = context.importedInvoiceLines.Where(x => x.SolidisItemPK == line.SolidisItemPK && x.SolidisProductPK == line.SolidisProductPK).FirstOrDefault();
+
+			if (duplicate == null)
+			{
+				Insert(mapped);
+			}
+		}
 
 	}
 }

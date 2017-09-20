@@ -56,6 +56,10 @@ namespace ZegroXMLService
 			}
 			
 			Mapper.Initialize(initializeMapper);
+
+			var retrievedInvoices = await manager.GetItems<ImportInvoice>(XMLManager.Types.INVOICE);
+			await DoPostsInvoices(retrievedInvoices);
+
 			var retrievedCustomers = await manager.GetItems<ImportCustomer>(XMLManager.Types.CUSTOMERS);
 			await DoPostsCustomers(retrievedCustomers);
 
@@ -90,7 +94,6 @@ namespace ZegroXMLService
 
 			try
 			{
-				//var testData = await manager.GetAll<imgtype, ImageTypeDTO>();
 				using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
 				{
 					writer.WriteLine(String.Format("service start {0} ",
@@ -215,6 +218,42 @@ namespace ZegroXMLService
 				{
 					StringContent orderContent = new StringContent(JsonConvert.SerializeObject(line), Encoding.UTF8, "application/json");
 					var resp = await client.PostAsync("api/ImportedData/PostSpecPriceItem", orderContent);
+					if (resp.IsSuccessStatusCode)
+					{
+						//
+					}
+				}
+			}
+		}
+
+		public async Task DoPostsInvoices(IEnumerable<ImportInvoice> retrievedInvoicesList)
+		{
+
+			using (HttpClient client = new HttpClient())
+			{
+				var invoicesLines = new List<ImportInvoiceLine>();
+				client.BaseAddress = apiUri;
+				client.DefaultRequestHeaders.Accept.Clear();
+				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+				foreach (ImportInvoice item in retrievedInvoicesList)
+				{
+					foreach (var l in item.InvoiceLines)
+					{
+						l.InvoiceSolidisPK = item.SolidisPK;
+					}
+					invoicesLines.AddRange(item.InvoiceLines);
+					item.InvoiceLines = new List<ImportInvoiceLine>();
+					StringContent content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
+					var response = await client.PostAsync("api/ImportedData/PostInvoice", content);
+					if (response.IsSuccessStatusCode)
+					{
+
+					}
+				}
+				foreach (ImportInvoiceLine line in invoicesLines)
+				{
+					StringContent orderContent = new StringContent(JsonConvert.SerializeObject(line), Encoding.UTF8, "application/json");
+					var resp = await client.PostAsync("api/ImportedData/PostInvoiceLine", orderContent);
 					if (resp.IsSuccessStatusCode)
 					{
 						//

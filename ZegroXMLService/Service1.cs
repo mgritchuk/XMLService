@@ -57,11 +57,12 @@ namespace ZegroXMLService
 			
 			Mapper.Initialize(initializeMapper);
 			var retrievedItemsList = await manager.GetItems<ImportItem>(XMLManager.Types.ITEMS);
-		
-			ThreadPool.QueueUserWorkItem(async i => await DoPostsImportItem(retrievedItemsList));
+			await DoPostsImportItem(retrievedItemsList);
+			//ThreadPool.QueueUserWorkItem(async i => await DoPostsImportItem(retrievedItemsList));
 
 			var retrievedOrders = await manager.GetItems<ImportOrder>(XMLManager.Types.ORDER);
-			ThreadPool.QueueUserWorkItem(async i => await DoPostsImportOrders(retrievedOrders));
+			//ThreadPool.QueueUserWorkItem(async i => await DoPostsImportOrders(retrievedOrders));
+			await DoPostsImportOrders(retrievedOrders);
 
 
 			//using (HttpClient client = new HttpClient())
@@ -126,24 +127,34 @@ namespace ZegroXMLService
 
 		public async Task DoPostsImportOrders(IEnumerable<ImportOrder> retrievedItemsList)
 		{
+
 			using (HttpClient client = new HttpClient())
 			{
+				var ordersLines = new List<ImportOrderLine>();
 				client.BaseAddress = apiUri;
 				client.DefaultRequestHeaders.Accept.Clear();
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 				foreach (ImportOrder item in retrievedItemsList)
 				{
-					var ordlines = item.OrderLinesList;
+					foreach(var l in item.OrderLinesList)
+					{
+						l.orderSolidisPK = item.SolidisPK;
+					}
+					ordersLines.AddRange(item.OrderLinesList);
 					StringContent content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
-					var response = await client.PostAsync("api/ImportedData/P", content);
+					var response = await client.PostAsync("api/ImportedData/PostOrder", content);
 					if (response.IsSuccessStatusCode)
 					{
-						StringContent orderContent = new StringContent(JsonConvert.SerializeObject(ordlines), Encoding.UTF8, "application/json");
-						var resp = await client.PostAsync("", content);
-						if(resp.IsSuccessStatusCode)
-						{
-							//
-						}
+						
+					}
+				}
+				foreach (ImportOrderLine line in ordersLines)
+				{
+					StringContent orderContent = new StringContent(JsonConvert.SerializeObject(line), Encoding.UTF8, "application/json");
+					var resp = await client.PostAsync("api/ImportedData/PostOrderLine", orderContent);
+					if (resp.IsSuccessStatusCode)
+					{
+						//
 					}
 				}
 			}

@@ -149,7 +149,7 @@ namespace ZegroWebAPI.Controllers
 		[HttpPost]
 		public async Task<IHttpActionResult> PostInvoiceLine(ImportInvoiceLine item)
 		{
-			manager.InsertInvoiceLine(item);
+			await manager.InsertInvoiceLine(item);
 			return Ok();
 		}
 

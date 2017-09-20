@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BLL.Managers;
+using DAL;
 using Models.DB;
 using Models.DTO;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +12,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +23,7 @@ namespace ZegroXMLService
 {
 	public partial class XMLService : ServiceBase
 	{
+		private readonly Uri apiUri = new Uri("http://localhost:54725");
 		private readonly XMLManager manager;
 		public void onDebug()
 		{
@@ -34,7 +39,7 @@ namespace ZegroXMLService
 			CanStop = true;
 			CanPauseAndContinue = true;
 			AutoLog = true;
-			manager = new XMLManager(new MainContext());
+			manager = new XMLManager();
 			
 			
 		}
@@ -49,7 +54,23 @@ namespace ZegroXMLService
 			}
 			
 			Mapper.Initialize(initializeMapper);
-			var retrievedValuesList = await manager.GetItems<ImportItem>(XMLManager.Types.ITEMS);
+			var retrievedItemsList = await manager.GetItems<ImportItem>(XMLManager.Types.ITEMS);
+
+			using (HttpClient client = new HttpClient())
+			{
+				client.BaseAddress = apiUri;
+				client.DefaultRequestHeaders.Accept.Clear();
+				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+				foreach (ImportItem item in retrievedItemsList)
+				{
+					StringContent content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
+					var response = await client.PostAsync("api/ImportedDataController/PostItem", content);
+					if (response.IsSuccessStatusCode)
+					{
+						//rm origin
+					}
+				}
+			}
 
 			try
 			{

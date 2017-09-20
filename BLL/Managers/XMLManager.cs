@@ -17,7 +17,7 @@ using System.Data;
 namespace BLL.Managers
 {
 
-	public class XMLManager : BaseManager, IXMLManager
+	public class XMLManager : IXMLManager
 	{
 
 
@@ -26,12 +26,13 @@ namespace BLL.Managers
 		private const string userName = @"zegro\pasys";
 		private const string pwd = "MGkt8ETL";
 		#endregion
-		private readonly string connectionString = "Data Source=149.210.200.56; ;Initial Catalog=project_ukr_temp;Network Library=DBMSSOCN;User Id = ahguest_1; Password = ahguest_1;";
+		//private readonly string connectionString = "Data Source=149.210.200.56; ;Initial Catalog=project_ukr_temp;Network Library=DBMSSOCN;User Id = ahguest_1; Password = ahguest_1;";
 		private readonly Encoding noByteOrderMark = new UTF8Encoding(false);
 		public enum Types { ITEMS, ORDER, SPECPRICE, INVOICE, CUSTOMERS };
-		public XMLManager(MainContext context) : base(context)
-		{
-		}
+		//public XMLManager(MainContext context) : base(context)
+		//{
+		//}
+		public XMLManager() { }
 
 		public async Task<IEnumerable<T>> GetItems<T>(Types type) where T : class
 		{
@@ -301,7 +302,7 @@ namespace BLL.Managers
 				catch (WebException ex)
 				{	}
 			}
-	return importedItems;
+			return importedItems;
 		}
 
 
@@ -311,7 +312,7 @@ namespace BLL.Managers
 			string path = "C:\\ImportedXML\\" + now + "\\";
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
-			//doc.Save(path + fileName);
+		
 			XmlWriterSettings settings = new XmlWriterSettings { OmitXmlDeclaration = true, Indent = true, Encoding = noByteOrderMark };
 			using (XmlWriter writer = XmlWriter.Create(path + fileName, settings))
 			{
@@ -320,56 +321,57 @@ namespace BLL.Managers
 		}
 
 
-		public void InsertItem(ImportItem item)
-		{
-			SqlConnection connection = new SqlConnection();
-			connection.ConnectionString = connectionString;
-			SqlCommand sql = new SqlCommand();
-			sql.CommandText = "INSERT INTO importedItems (SolidisPK, Action, Validation, DisplayCode, Description, DefaultUnitOfMeasure, DefaultTradeUnitOfMeasure)" +
-			"Values (@SolidisPK, @Action, @Validation, @DisplayCode, @Description, @DefaultUnitOfMeasure, @DefaultTradeUnitOfMeasure)";
-			sql.Connection = connection;
+		//public void InsertItem(ImportItem item)
+		//{
+		//	SqlConnection connection = new SqlConnection();
+		//	connection.ConnectionString = connectionString;
+		//	SqlCommand sql = new SqlCommand();
+		//	sql.CommandText = "INSERT INTO importedItems (SolidisPK, Action, Validation, DisplayCode, Description, DefaultUnitOfMeasure, DefaultTradeUnitOfMeasure)" +
+		//	"Values (@SolidisPK, @Action, @Validation, @DisplayCode, @Description, @DefaultUnitOfMeasure, @DefaultTradeUnitOfMeasure)";
+		//	sql.Connection = connection;
 
-			sql.Parameters.AddWithValue("@SolidisPK", item.SolidisPK);
-			sql.Parameters.AddWithValue("@Action", item.Action);
-			sql.Parameters.AddWithValue("@Validation", item.Validation);
-			sql.Parameters.AddWithValue("@DisplayCode", item.DisplayCode);
-			sql.Parameters.AddWithValue("@Description", item.Description);
-			sql.Parameters.AddWithValue("@DefaultUnitOfMeasure", item.DefaultUnitOfMeasure);
-			sql.Parameters.AddWithValue("@DefaultTradeUnitOfMeasure", item.DefaultTradeUnitOfMeasure);
-			connection.Open();
-			int rowInserted = sql.ExecuteNonQuery();
-			connection.Close();
+		//	sql.Parameters.AddWithValue("@SolidisPK", item.SolidisPK);
+		//	sql.Parameters.AddWithValue("@Action", item.Action);
+		//	sql.Parameters.AddWithValue("@Validation", item.Validation);
+		//	sql.Parameters.AddWithValue("@DisplayCode", item.DisplayCode);
+		//	sql.Parameters.AddWithValue("@Description", item.Description);
+		//	sql.Parameters.AddWithValue("@DefaultUnitOfMeasure", item.DefaultUnitOfMeasure);
+		//	sql.Parameters.AddWithValue("@DefaultTradeUnitOfMeasure", item.DefaultTradeUnitOfMeasure);
+		//	connection.Open();
+		//	int rowInserted = sql.ExecuteNonQuery();
+		//	connection.Close();
 			
 
-		}
+		//}
 
-		public List<ItmAlbaDTO> GetAllItemAllergens()
-		{
-			List<ItmAlbaDTO> list =  new List<ItmAlbaDTO>();
+		//public List<ItmAlbaDTO> GetAllItemAllergens()
+		//{
+		//	List<ItmAlbaDTO> list =  new List<ItmAlbaDTO>();
 			
-			string sql = "SELECT [id], [version_ad], [itm_ad] FROM itmalba";
+		//	string sql = "SELECT [id], [version_ad], [itm_ad] FROM itmalba";
 			
-			var x = new ItmAlbaDTO();
-			using (var connection = new SqlConnection(connectionString))
-			using (var command = new SqlCommand(sql, connection))
-			{
-				connection.Open();
-				using (var reader = command.ExecuteReader())
-				{
-					if (reader.HasRows)
-					{
-						//return AutoMapper.Mapper.Map<IDataReader, List<ItmAlbaDTO>>(reader);
-						while(reader.Read())
-						{
-							//list.Add(reader[0].ToString());
-							list.Add( AutoMapper.Mapper.Map<IDataReader, ItmAlbaDTO>(reader));
-						}
-					}
-				}
-			}
+		//	var x = new ItmAlbaDTO();
+		//	using (var connection = new SqlConnection(connectionString))
+		//	using (var command = new SqlCommand(sql, connection))
+		//	{
+		//		connection.Open();
+		//		using (var reader = command.ExecuteReader())
+		//		{
+		//			if (reader.HasRows)
+		//			{
+		//				//return AutoMapper.Mapper.Map<IDataReader, List<ItmAlbaDTO>>(reader);
+		//				while(reader.Read())
+		//				{
+		//					//list.Add(reader[0].ToString());
+		//					list.Add( AutoMapper.Mapper.Map<IDataReader, ItmAlbaDTO>(reader));
+		//				}
+		//			}
+		//		}
+		//	}
 
 
-			return list;
-		}
+		//	return list;
+		//}
+
 	}
 }

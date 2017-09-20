@@ -2,8 +2,9 @@ using System;
 using System.Data.Entity;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using Models.DB;
 
-namespace Models.DB
+namespace DAL
 {
 	public partial class MainContext : DbContext
 	{

@@ -8,11 +8,11 @@ using static BLL.Managers.XMLManager;
 
 namespace BLL.Interfaces
 {
-	public interface IXMLManager : IBaseManager
+	public interface IXMLManager 
 	{
 		
 		Task<IEnumerable<T>> GetItems<T>(Types type) where T : class;
-		List<ItmAlbaDTO> GetAllItemAllergens();
-		void InsertItem(ImportItem item);
+		//List<ItmAlbaDTO> GetAllItemAllergens();
+		//void InsertItem(ImportItem item);
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BLL.Interfaces;
-
+using DAL;
 using Models.DB;
 using System;
 using System.Collections.Generic;
@@ -57,6 +57,29 @@ namespace BLL.Managers
 			context.Entry(entityToUpdate).State = EntityState.Modified;
 		}
 
+		//public virtual async Task InsertOrUpdate<TEntity, Tout>(TEntity entity, Func<TEntity, Tout> id) where TEntity : class
+		//{
+		//	TEntity entityToUpdate = await context.Set<TEntity>().FindAsync(id);
+		//	if(entityToUpdate != null)
+		//	{
+		//		context.Set<TEntity>().Attach(entity);
+		//		context.Entry(entity).State = EntityState.Modified;
+		//	}
+		//	else
+		//	{
+		//		var dbSet = context.Set<TEntity>();
+		//		var dbModel = Mapper.Map<TEntity>(entity);
+		//		var dtCreated = typeof(TEntity).GetProperty("dt_created");
+		//		if(dtCreated != null)
+		//		{
+		//			dtCreated.SetValue(dbModel, DateTime.UtcNow);
+		//		}
+		//		dbSet.Add(dbModel);
+		//		await SaveAsync();
+
+		//	}
+
+		//}
 
 		public virtual async Task<TOut> Add<TEntity, TOut>(TOut entity, Action<TEntity, TOut> id) where TEntity : class
 		{

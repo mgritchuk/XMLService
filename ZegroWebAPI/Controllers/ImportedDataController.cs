@@ -13,25 +13,50 @@ namespace ZegroWebAPI.Controllers
 {
     public class ImportedDataController : ApiController
     {
-		private readonly IXMLManager manager;
-		public ImportedDataController(IXMLManager manager)
+		private readonly ILogImportsManager manager;
+
+		public ImportedDataController(ILogImportsManager manager)
 		{
 			this.manager = manager;
 		}
 
-		[HttpGet]
-		public IHttpActionResult GetAllAllergens()
-		{
-			return Json(manager.GetAllItemAllergens());
-		}
+
 
 		[HttpPost]
 		public async Task<IHttpActionResult> PostItem(ImportItem item)
 		{
-			//manager.InsertItem(item);
+			
 			return Json(await manager.Add<importedItems, ImportItem>(item, (db, dto) => dto.SolidisPK = db.SolidisPK));
 			
 		}
 
+		[HttpPost]
+		public async Task<IHttpActionResult> PostItems(IEnumerable<ImportItem> items)
+		{
+			List<ImportItem> res = new List<ImportItem>();
+			foreach(ImportItem item in items)
+			{
+				res.Add( await manager.Add<importedItems, ImportItem>(item, (db, dto) => dto.SolidisPK = db.SolidisPK));
+
+			}
+			return Json(res);
+		}
+
+		[HttpPut]
+		public async Task<IHttpActionResult> PutItem(ImportItem item)
+		{
+			await manager.Update<importedItems, ImportItem>(item, i => i.SolidisPK);
+			return Ok();
+		}
+
+		[HttpPut]
+		public async Task<IHttpActionResult> PutItems(IEnumerable<ImportItem> items)
+		{
+			foreach (ImportItem item in items)
+			{
+				await manager.Update<importedItems, ImportItem>(item, i => i.SolidisPK);
+			}
+			return Ok();
+		}
     }
 }

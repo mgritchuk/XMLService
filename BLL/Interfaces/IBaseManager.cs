@@ -19,5 +19,6 @@ namespace BLL.Interfaces
 			Expression<Func<TEntity, bool>> filter = null,
 			Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
 			string includeProperties = "") where TEntity : class;
+		//Task InsertOrUpdate<TEntity>(TEntity entity, Func<TEntity> id) where TEntity : class;
 	}
 }

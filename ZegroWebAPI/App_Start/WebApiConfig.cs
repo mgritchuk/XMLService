@@ -22,9 +22,12 @@ namespace ZegroWebAPI
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
+                routeTemplate: "api/{controller}/{action}",
                 defaults: new { id = RouteParameter.Optional }
             );
-        }
+
+			//disable xml type responce (now it works with json)
+			config.Formatters.Remove(config.Formatters.XmlFormatter);
+		}
     }
 }

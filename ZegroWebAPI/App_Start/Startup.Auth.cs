@@ -17,6 +17,7 @@ using SimpleInjector.Extensions.ExecutionContextScoping;
 using SimpleInjector;
 using SimpleInjector.Integration.WebApi;
 using System.Web.Http;
+using DAL;
 
 namespace ZegroWebAPI
 {
@@ -93,6 +94,7 @@ namespace ZegroWebAPI
 			container.Register<MainContext>(Lifestyle.Scoped);
 
 			container.Register<IXMLManager, XMLManager>();
+			container.Register<ILogImportsManager, LogImportsManager>();
 		}
 
     }

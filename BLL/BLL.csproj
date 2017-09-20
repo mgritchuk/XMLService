@@ -54,8 +54,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IBaseManager.cs" />
+    <Compile Include="Interfaces\ILogImportsManager.cs" />
     <Compile Include="Interfaces\IXMLManager.cs" />
     <Compile Include="Managers\BaseManager.cs" />
+    <Compile Include="Managers\LogImportsManager.cs" />
     <Compile Include="Managers\XMLManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

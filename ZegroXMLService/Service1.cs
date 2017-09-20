@@ -144,6 +144,7 @@ namespace ZegroXMLService
 						l.orderSolidisPK = item.SolidisPK;
 					}
 					ordersLines.AddRange(item.OrderLinesList);
+					item.OrderLinesList = new List<ImportOrderLine>();
 					StringContent content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
 					var response = await client.PostAsync("api/ImportedData/PostOrder", content);
 					if (response.IsSuccessStatusCode)
@@ -179,6 +180,7 @@ namespace ZegroXMLService
 						l.SpecPriceSolidisPK = item.SolidisPK;
 					}
 					pricesLines.AddRange(item.PriceItems);
+					item.PriceItems = new List<ImportSpecPriceItem>();
 					StringContent content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
 					var response = await client.PostAsync("api/ImportedData/PostSpecPrice", content);
 					if (response.IsSuccessStatusCode)

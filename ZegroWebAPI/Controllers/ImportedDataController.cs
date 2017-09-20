@@ -133,5 +133,16 @@ namespace ZegroWebAPI.Controllers
 				return Json(await manager.Add<importedSpecPriceItem, ImportSpecPriceItem>(item, (db, dto) => dto.SolidisPK = db.SolidisPK));
 			return Json(false);
 		}
+
+		//customer
+		[HttpPost]
+		public async Task<IHttpActionResult> PostCustomer(ImportCustomer item)
+		{
+			var duplicate = await manager.Get<importedCustomer, ImportCustomer>(item.SolidisPK);
+			if (duplicate == null)
+
+				return Json(await manager.Add<importedCustomer, ImportCustomer>(item, (db, dto) => dto.SolidisPK = db.SolidisPK));
+			return Json(false);
+		}
 	}
 }

@@ -45,6 +45,8 @@ namespace ZegroWebAPI
 			cfg.CreateMap<importedSpecPrice, ImportSpecPrice>();
 			cfg.CreateMap<importedSpecPriceItem, ImportSpecPriceItem>();
 			cfg.CreateMap<ImportSpecPriceItem, importedSpecPriceItem>();
+			cfg.CreateMap<importedCustomer, ImportCustomer>();
+			cfg.CreateMap<ImportCustomer, importedCustomer>();
 		}
 
 

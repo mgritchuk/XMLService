@@ -56,6 +56,9 @@ namespace ZegroXMLService
 			}
 			
 			Mapper.Initialize(initializeMapper);
+			var retrievedCustomers = await manager.GetItems<ImportCustomer>(XMLManager.Types.CUSTOMERS);
+			await DoPostsCustomers(retrievedCustomers);
+
 			var retrievedPrices = await manager.GetItems<ImportSpecPrice>(XMLManager.Types.SPECPRICE);
 			await DoPostsImportPrices(retrievedPrices);
 
@@ -123,6 +126,26 @@ namespace ZegroXMLService
 					if (response.IsSuccessStatusCode)
 					{
 						//rm origin
+					}
+				}
+			}
+		}
+
+		public async Task DoPostsCustomers(IEnumerable<ImportCustomer> retrievedcustomersList)
+		{
+			using (HttpClient client = new HttpClient())
+			{
+				client.BaseAddress = apiUri;
+				client.DefaultRequestHeaders.Accept.Clear();
+				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+				foreach (ImportCustomer item in retrievedcustomersList)
+				{
+
+					StringContent content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
+					var response = await client.PostAsync("api/ImportedData/PostCustomer", content);
+					if (response.IsSuccessStatusCode)
+					{
+						
 					}
 				}
 			}

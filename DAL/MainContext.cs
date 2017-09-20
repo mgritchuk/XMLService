@@ -95,6 +95,7 @@ namespace DAL
 		public virtual DbSet<importedOrderLine> importedOrderLines { get; set; }
 		public virtual DbSet<importedSpecPrice> importedSpecPrices { get; set; }
 		public virtual DbSet<importedSpecPriceItem> importedSpecPriceItems { get; set; }
+		public virtual DbSet<importedCustomer> importedCustomers { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{

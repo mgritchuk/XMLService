@@ -104,7 +104,20 @@ namespace BLL.Managers
 
 					using (StringReader s = new StringReader(path))
 					{
-						xml = XDocument.Load(s);
+						try
+						{
+							xml = XDocument.Load(s);
+						}
+						catch (Exception ex)
+						{
+							
+							using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
+							{
+								writer.WriteLine(String.Format("exception on parsing xml {0},{1}, {2}",
+									DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), ex.ToString()), file.Name);
+								writer.Flush();
+							}
+						}
 					}
 					SaveImportedXML(xml, file.Name, true);
 

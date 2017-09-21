@@ -13,7 +13,7 @@ namespace ZegroXMLService.Scheduler
 	{
 		public static void Start()
 		{
-			int checkInterval = 2;
+			int checkInterval = 10;
 
 			IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler();
 

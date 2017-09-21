@@ -51,12 +51,7 @@ namespace ZegroXMLService
 		//private CancellationTokenSource cancleToken;
 		protected override async void OnStart(string[] args)
 		{
-			using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
-			{
-				writer.WriteLine(String.Format("service start {0}",
-					DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss")));
-				writer.Flush();
-			}
+			
 			
 			Mapper.Initialize(initializeMapper);
 
@@ -69,6 +64,7 @@ namespace ZegroXMLService
 						DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss")));
 					writer.Flush();
 				}
+				ImportScheduler.Start();
 			}
 			catch (Exception ex)
 			{
@@ -82,7 +78,7 @@ namespace ZegroXMLService
 			}
 
 			//scheduler start
-			ImportScheduler.Start();
+			
 		}
 
 		

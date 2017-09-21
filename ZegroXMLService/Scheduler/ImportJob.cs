@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using BLL.Managers;
+using System.IO;
 
 namespace ZegroXMLService.Scheduler
 {
@@ -24,21 +25,34 @@ namespace ZegroXMLService.Scheduler
 
 		public async void Execute(IJobExecutionContext context)
 		{
-			var retrievedInvoices = await manager.GetItems<ImportInvoice>(XMLManager.Types.INVOICE);
-			await DoPostsInvoices(retrievedInvoices);
+			try
+			{
+				var retrievedInvoices = await manager.GetItems<ImportInvoice>(XMLManager.Types.INVOICE);
+				await DoPostsInvoices(retrievedInvoices);
 
-			var retrievedCustomers = await manager.GetItems<ImportCustomer>(XMLManager.Types.CUSTOMERS);
-			await DoPostsCustomers(retrievedCustomers);
+				var retrievedCustomers = await manager.GetItems<ImportCustomer>(XMLManager.Types.CUSTOMERS);
+				await DoPostsCustomers(retrievedCustomers);
 
-			var retrievedPrices = await manager.GetItems<ImportSpecPrice>(XMLManager.Types.SPECPRICE);
-			await DoPostsImportPrices(retrievedPrices);
+				var retrievedPrices = await manager.GetItems<ImportSpecPrice>(XMLManager.Types.SPECPRICE);
+				await DoPostsImportPrices(retrievedPrices);
 
-			var retrievedItemsList = await manager.GetItems<ImportItem>(XMLManager.Types.ITEMS);
-			await DoPostsImportItem(retrievedItemsList);
-			//ThreadPool.QueueUserWorkItem(async i => await DoPostsImportItem(retrievedItemsList));
+				var retrievedItemsList = await manager.GetItems<ImportItem>(XMLManager.Types.ITEMS);
+				await DoPostsImportItem(retrievedItemsList);
+				//ThreadPool.QueueUserWorkItem(async i => await DoPostsImportItem(retrievedItemsList));
 
-			var retrievedOrders = await manager.GetItems<ImportOrder>(XMLManager.Types.ORDER);
-			await DoPostsImportOrders(retrievedOrders);
+				var retrievedOrders = await manager.GetItems<ImportOrder>(XMLManager.Types.ORDER);
+				await DoPostsImportOrders(retrievedOrders);
+			}
+			catch (Exception ex)
+			{
+				
+				using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
+				{
+					writer.WriteLine(String.Format("exception  {0},{1}",
+						DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), ex.ToString()));
+					writer.Flush();
+				}
+			}
 		}
 
 		public async Task DoPostsImportItem(IEnumerable<ImportItem> retrievedItemsList)

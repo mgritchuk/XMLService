@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using System.Text;
 using System.Data.SqlClient;
 using System.Data;
+using IniParser;
+using IniParser.Model;
 
 namespace BLL.Managers
 {
@@ -22,9 +24,9 @@ namespace BLL.Managers
 
 
 		#region FTP credentials
-		private const string host = "ftp://90.145.96.196/ERPToPasys";
-		private const string userName = @"zegro\pasys";
-		private const string pwd = "MGkt8ETL";
+		private readonly string host = "ftp://90.145.96.196/ERPToPasys";
+		private readonly string userName = @"zegro\pasys";
+		private readonly string pwd = "MGkt8ETL";
 		#endregion
 		//private readonly string connectionString = "Data Source=149.210.200.56; ;Initial Catalog=project_ukr_temp;Network Library=DBMSSOCN;User Id = ahguest_1; Password = ahguest_1;";
 		private readonly Encoding noByteOrderMark = new UTF8Encoding(false);
@@ -34,6 +36,28 @@ namespace BLL.Managers
 		//}
 		public XMLManager()
 		{
+			var path = "C:\\Conf\\config.ini";//Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+			var parser = new FileIniDataParser();
+
+			IniData data = parser.ReadFile(path);
+			host = data["FTPPath"]["host"];
+			userName = data["Credentials"]["name"];
+			pwd = data["Credentials"]["pwd"];
+
+
+
+			//IniData user_con
+
+			//if (!File.Exists(path + "\\config.txt"))
+			//{
+			//	using (StreamWriter writer = new StreamWriter(path + "\\config.txt", true))
+			//	{
+			//		writer.WriteLine(String.Format("host {0}, userName {1}, pwd {2} ",
+			//			host, userName, pwd));
+			//		writer.Flush();
+
+			//	}
+			//}
 
 		}
 

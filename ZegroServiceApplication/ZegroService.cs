@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BLL.Managers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -36,6 +37,12 @@ namespace ZegroServiceApplication
 				controller.Stop();
 				StartService.Text = "Start service";
 			}
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			var man = new XMLManager();
+
 		}
 	}
 }

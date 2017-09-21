@@ -123,6 +123,10 @@
     <None Include="Resources\76f78cceb27dddd721f9460087ebf293.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BLL\BLL.csproj">
+      <Project>{9C75F0F2-8995-4364-B039-96AEC6C58CB5}</Project>
+      <Name>BLL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ZegroXMLService\ZegroXMLService.csproj">
       <Project>{6c6d3f19-fbd0-48df-ad56-b6cb6c953894}</Project>
       <Name>ZegroXMLService</Name>

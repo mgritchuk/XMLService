@@ -60,7 +60,7 @@ namespace ZegroXMLService
 			
 			Mapper.Initialize(initializeMapper);
 
-
+			logger.Log(LogLevel.Error, "Start");
 			try
 			{
 				using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
@@ -89,6 +89,7 @@ namespace ZegroXMLService
 
 		protected override void OnStop()
 		{
+			logger.Log(LogLevel.Error, "Stop");
 			try
 			{
 

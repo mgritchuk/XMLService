@@ -35,6 +35,18 @@ namespace ZegroXMLService
 						ServiceBase.Run(ServicesToRun);
 			#endif
 
+
+
+
+
+
+
+
+
+
+
+
+
 			// ServiceController ctl = ServiceController.GetServices().FirstOrDefault(s => s.ServiceName == "Service1");
 			//if (ctl != null)
 			//	ManagedInstallerClass.InstallHelper(new string[] { "/u", Assembly.GetExecutingAssembly().Location });

@@ -32,7 +32,10 @@ namespace BLL.Managers
 		//public XMLManager(MainContext context) : base(context)
 		//{
 		//}
-		public XMLManager() { }
+		public XMLManager()
+		{
+
+		}
 
 		public async Task<IEnumerable<T>> GetItems<T>(Types type) where T : class
 		{

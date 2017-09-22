@@ -31,7 +31,9 @@ namespace ZegroServiceApplication
         /// </summary>
         private void InitializeComponent()
         {
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ZegroService));
 			this.StartService = new System.Windows.Forms.Button();
+			this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
 			this.SuspendLayout();
 			// 
 			// StartService
@@ -50,19 +52,17 @@ namespace ZegroServiceApplication
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(358, 249);
 			this.Controls.Add(this.StartService);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "ZegroService";
 			this.Text = "Zegro Service";
 			this.ResumeLayout(false);
-			Bitmap btmp = Properties.Resources.InActive;
-			IntPtr hicon = btmp.GetHicon();
-			Icon icon = Icon.FromHandle(hicon);
-			this.Icon = icon;
 
         }
 
 		#endregion
 
 		private System.Windows.Forms.Button StartService;
+		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
 	}
 }
 

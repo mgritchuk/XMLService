@@ -164,6 +164,7 @@
     <Compile Include="DTO\ClosedDayDTO.cs" />
     <Compile Include="DTO\CommonDTO.cs" />
     <Compile Include="DTO\CompanyModel.cs" />
+    <Compile Include="DTO\ConfigModel.cs" />
     <Compile Include="DTO\DeliveryDaysSchedulItemDTO.cs" />
     <Compile Include="DTO\EmailModel.cs" />
     <Compile Include="DTO\EncodedImage.cs" />

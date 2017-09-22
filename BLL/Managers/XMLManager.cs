@@ -37,22 +37,22 @@ namespace BLL.Managers
 		//}
 		public XMLManager()
 		{
-			var configLocation = "C:\\config.ini";//Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\config.ini";
-			var parser = new FileIniDataParser();
+			//var configLocation = "C:\\config.ini";//Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\config.ini";
+			//var parser = new FileIniDataParser();
 
-			using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
-			{
-				writer.WriteLine(String.Format("manager {0} {1}",
-					DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), configLocation));
-				writer.Flush();
-			}
+			//using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
+			//{
+			//	writer.WriteLine(String.Format("manager {0} {1}",
+			//		DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), configLocation));
+			//	writer.Flush();
+			//}
 
-			IniData data = parser.ReadFile(configLocation);
-			host = data["FTPPath"]["host"];
-			userName = data["Credentials"]["name"];
-			pwd = data["Credentials"]["pwd"];
+			//IniData data = parser.ReadFile(configLocation);
+			//host = data["FTPPath"]["host"];
+			//userName = data["Credentials"]["name"];
+			//pwd = data["Credentials"]["pwd"];
 
-			path = data["IngoingXML"]["path"];
+			//path = data["IngoingXML"]["path"];
 
 
 

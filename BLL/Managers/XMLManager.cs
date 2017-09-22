@@ -27,6 +27,7 @@ namespace BLL.Managers
 		private readonly string host = "ftp://90.145.96.196/ERPToPasys";
 		private readonly string userName = @"zegro\pasys";
 		private readonly string pwd = "MGkt8ETL";
+		private readonly string path = "C:\\ImportedXML";
 		#endregion
 		//private readonly string connectionString = "Data Source=149.210.200.56; ;Initial Catalog=project_ukr_temp;Network Library=DBMSSOCN;User Id = ahguest_1; Password = ahguest_1;";
 		private readonly Encoding noByteOrderMark = new UTF8Encoding(false);
@@ -36,28 +37,24 @@ namespace BLL.Managers
 		//}
 		public XMLManager()
 		{
-			var path = "C:\\Conf\\config.ini";//Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+			var configLocation = /*"C:\\Conf\\config.ini";*/Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\config.ini";
 			var parser = new FileIniDataParser();
 
-			IniData data = parser.ReadFile(path);
+			using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
+			{
+				writer.WriteLine(String.Format("manager {0} {1}",
+					DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), configLocation));
+				writer.Flush();
+			}
+
+			IniData data = parser.ReadFile(configLocation);
 			host = data["FTPPath"]["host"];
 			userName = data["Credentials"]["name"];
 			pwd = data["Credentials"]["pwd"];
 
+			path = data["IngoingXML"]["path"];
 
 
-			//IniData user_con
-
-			//if (!File.Exists(path + "\\config.txt"))
-			//{
-			//	using (StreamWriter writer = new StreamWriter(path + "\\config.txt", true))
-			//	{
-			//		writer.WriteLine(String.Format("host {0}, userName {1}, pwd {2} ",
-			//			host, userName, pwd));
-			//		writer.Flush();
-
-			//	}
-			//}
 
 		}
 
@@ -349,7 +346,7 @@ namespace BLL.Managers
 		private void SaveImportedXML(XDocument doc, string fileName, bool removeOriginal)
 		{
 			string now = DateTime.UtcNow.Date.ToShortDateString();
-			string path = "C:\\ImportedXML\\" + now + "\\";
+			string path = this.path + "\\" + now + "\\";
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
 		

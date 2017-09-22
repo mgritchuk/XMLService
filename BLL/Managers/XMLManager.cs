@@ -24,9 +24,9 @@ namespace BLL.Managers
 
 
 		#region FTP credentials
-		private readonly string host = "ftp://90.145.96.196/ERPToPasys";
-		private readonly string userName = @"zegro\pasys";
-		private readonly string pwd = "MGkt8ETL";
+		private readonly string host = "";//"ftp://90.145.96.196/ERPToPasys";
+		private readonly string userName = "";// @"zegro\pasys";
+		private readonly string pwd = "";//"MGkt8ETL";
 		private readonly string path = "C:\\ImportedXML";
 		#endregion
 		//private readonly string connectionString = "Data Source=149.210.200.56; ;Initial Catalog=project_ukr_temp;Network Library=DBMSSOCN;User Id = ahguest_1; Password = ahguest_1;";
@@ -37,7 +37,7 @@ namespace BLL.Managers
 		//}
 		public XMLManager()
 		{
-			var configLocation = /*"C:\\Conf\\config.ini";*/Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\config.ini";
+			var configLocation = "C:\\config.ini";//Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\config.ini";
 			var parser = new FileIniDataParser();
 
 			using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))

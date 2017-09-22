@@ -18,7 +18,8 @@ namespace ZegroServiceApplication
         public ZegroService()
         {
             InitializeComponent();
-        }
+			var man = new XMLManager();
+		}
 
 		private void StartService_Click(object sender, EventArgs e)
 		{
@@ -41,7 +42,7 @@ namespace ZegroServiceApplication
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			var man = new XMLManager();
+			
 
 		}
 	}

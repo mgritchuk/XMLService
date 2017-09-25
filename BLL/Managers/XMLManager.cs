@@ -342,6 +342,17 @@ namespace BLL.Managers
 			}
 		}
 
+		public string DeleteOriginFile(string fileName)
+		{
+			FtpWebRequest request = (FtpWebRequest)WebRequest.Create(confManager.Host + "\\" + fileName);
+			request.Method = WebRequestMethods.Ftp.DeleteFile;
+			request.Credentials = new NetworkCredential(confManager.UserName, confManager.Password);
+
+			using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
+			{
+				return response.StatusDescription;
+			}
+		}
 
 		//public void InsertItem(ImportItem item)
 		//{
@@ -362,16 +373,16 @@ namespace BLL.Managers
 		//	connection.Open();
 		//	int rowInserted = sql.ExecuteNonQuery();
 		//	connection.Close();
-			
+
 
 		//}
 
 		//public List<ItmAlbaDTO> GetAllItemAllergens()
 		//{
 		//	List<ItmAlbaDTO> list =  new List<ItmAlbaDTO>();
-			
+
 		//	string sql = "SELECT [id], [version_ad], [itm_ad] FROM itmalba";
-			
+
 		//	var x = new ItmAlbaDTO();
 		//	using (var connection = new SqlConnection(connectionString))
 		//	using (var command = new SqlCommand(sql, connection))

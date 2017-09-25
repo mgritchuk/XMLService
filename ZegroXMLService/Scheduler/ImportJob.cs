@@ -200,7 +200,7 @@ namespace ZegroXMLService.Scheduler
 					var resp = await client.PostAsync("api/ImportedData/PostInvoiceLine", orderContent);
 					if (resp.IsSuccessStatusCode)
 					{
-						//
+						//manager.DeleteOriginFile(item.filename);
 					}
 				}
 			}

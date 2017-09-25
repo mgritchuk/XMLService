@@ -15,11 +15,14 @@ namespace ZegroXMLService.Scheduler
 {
 	public class ImportJob : IJob
 	{
-		private readonly Uri apiUri = new Uri("http://localhost:54725/");
+		private readonly Uri apiUri;//= new Uri("http://localhost:54725/");
 		private readonly XMLManager manager;
+		private readonly ConfigFileManager confmanager;
 
 		public ImportJob()
 		{
+			confmanager = new ConfigFileManager();
+			apiUri = new Uri(confmanager.ApiUrl);
 			manager = new XMLManager();
 		}
 

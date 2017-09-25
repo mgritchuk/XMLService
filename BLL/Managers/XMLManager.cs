@@ -45,6 +45,7 @@ namespace BLL.Managers
 
 		public async Task<IEnumerable<T>> GetItems<T>(Types type) where T : class
 		{
+
 			FtpWebRequest request = (FtpWebRequest)FtpWebRequest.Create(confManager.Host);
 			request.Credentials = new NetworkCredential(confManager.UserName, confManager.Password);
 			request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
@@ -61,10 +62,16 @@ namespace BLL.Managers
 				listFilesInfo = reader.ReadToEnd().Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 			}
 
-
+			//using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
+			//{
+			//	writer.WriteLine(String.Format("{0} ",
+			//		listFilesInfo.Count()));
+			//	writer.Flush();
+			//}
 
 			foreach (string line in listFilesInfo)
 			{
+				
 				string data = line;
 				string date = data.Substring(0, 24);
 
@@ -102,7 +109,7 @@ namespace BLL.Managers
 				try
 				{
 
-					byte[] newFileData = await webRequest.DownloadDataTaskAsync(new Uri(confManager.Host + '/' + file.Name));
+					byte[] newFileData = await webRequest.DownloadDataTaskAsync(new Uri(confManager.Host + "/" + file.Name));
 
 					XDocument xml = new XDocument();
 					string path = System.Text.Encoding.UTF8.GetString(newFileData);
@@ -304,6 +311,12 @@ namespace BLL.Managers
 							case "ImportInvoice":
 								{
 									(retrievedValues[i] as ImportInvoice).fileName = file.Name;
+									//using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
+									//{
+									//	writer.WriteLine(String.Format("{0}"
+									//		, (retrievedValues[i] as ImportInvoice).fileName));
+									//	writer.Flush();
+									//}
 									(retrievedValues[i] as ImportInvoice).InvoiceLines = new List<ImportInvoiceLine>();
 									foreach (XDocument xDoc in linesDocs[i])
 									{

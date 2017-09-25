@@ -21,30 +21,44 @@ namespace ZegroXMLService.Scheduler
 
 		public ImportJob()
 		{
+			//using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
+			//{
+			//	writer.WriteLine(String.Format("ctor start"
+			//		));
+			//	writer.Flush();
+			//}
 			confmanager = new ConfigFileManager();
+			confmanager.ReadConfiguration();
 			apiUri = new Uri(confmanager.ApiUrl);
 			manager = new XMLManager();
+			//using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
+			//{
+			//	writer.WriteLine(String.Format("ctor end"
+			//		));
+			//	writer.Flush();
+			//}
 		}
 
 		public async void Execute(IJobExecutionContext context)
 		{
+			
 			try
 			{
 				var retrievedInvoices = await manager.GetItems<ImportInvoice>(XMLManager.Types.INVOICE);
 				await DoPostsInvoices(retrievedInvoices);
 
-				//var retrievedCustomers = await manager.GetItems<ImportCustomer>(XMLManager.Types.CUSTOMERS);
-				//await DoPostsCustomers(retrievedCustomers);
-				//
-				//var retrievedPrices = await manager.GetItems<ImportSpecPrice>(XMLManager.Types.SPECPRICE);
-				//await DoPostsImportPrices(retrievedPrices);
-				//
-				//var retrievedItemsList = await manager.GetItems<ImportItem>(XMLManager.Types.ITEMS);
-				//await DoPostsImportItem(retrievedItemsList);
-				////ThreadPool.QueueUserWorkItem(async i => await DoPostsImportItem(retrievedItemsList));
-				//
-				//var retrievedOrders = await manager.GetItems<ImportOrder>(XMLManager.Types.ORDER);
-				//await DoPostsImportOrders(retrievedOrders);
+				var retrievedCustomers = await manager.GetItems<ImportCustomer>(XMLManager.Types.CUSTOMERS);
+				await DoPostsCustomers(retrievedCustomers);
+				
+				var retrievedPrices = await manager.GetItems<ImportSpecPrice>(XMLManager.Types.SPECPRICE);
+				await DoPostsImportPrices(retrievedPrices);
+				
+				var retrievedItemsList = await manager.GetItems<ImportItem>(XMLManager.Types.ITEMS);
+				await DoPostsImportItem(retrievedItemsList);
+				//ThreadPool.QueueUserWorkItem(async i => await DoPostsImportItem(retrievedItemsList));
+				
+				var retrievedOrders = await manager.GetItems<ImportOrder>(XMLManager.Types.ORDER);
+				await DoPostsImportOrders(retrievedOrders);
 			}
 			catch (Exception ex)
 			{

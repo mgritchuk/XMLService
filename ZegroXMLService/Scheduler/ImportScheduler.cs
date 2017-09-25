@@ -15,6 +15,12 @@ namespace ZegroXMLService.Scheduler
 		{
 			int checkInterval = 10;
 
+			//using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
+			//{
+			//	writer.WriteLine(String.Format("Scheduler start"
+			//		));
+			//	writer.Flush();
+			//}
 			IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler();
 
 			IJobDetail job = JobBuilder.Create<ImportJob>().Build();

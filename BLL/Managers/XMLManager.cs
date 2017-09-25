@@ -24,44 +24,29 @@ namespace BLL.Managers
 
 
 		#region FTP credentials
-		private readonly string host = "";//"ftp://90.145.96.196/ERPToPasys";
-		private readonly string userName = "";// @"zegro\pasys";
-		private readonly string pwd = "";//"MGkt8ETL";
-		private readonly string path = "C:\\ImportedXML";
+		//private readonly string host = "";//"ftp://90.145.96.196/ERPToPasys";
+		//private readonly string userName = "";// @"zegro\pasys";
+		//private readonly string pwd = "";//"MGkt8ETL";
+		//private readonly string path = "C:\\ImportedXML";
 		#endregion
 		//private readonly string connectionString = "Data Source=149.210.200.56; ;Initial Catalog=project_ukr_temp;Network Library=DBMSSOCN;User Id = ahguest_1; Password = ahguest_1;";
 		private readonly Encoding noByteOrderMark = new UTF8Encoding(false);
 		public enum Types { ITEMS, ORDER, SPECPRICE, INVOICE, CUSTOMERS };
-		//public XMLManager(MainContext context) : base(context)
-		//{
-		//}
+		private readonly ConfigFileManager confManager;
+		
 		public XMLManager()
 		{
-			//var configLocation = "C:\\config.ini";//Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\config.ini";
-			//var parser = new FileIniDataParser();
-
-			//using (StreamWriter writer = new StreamWriter("C:\\templog.txt", true))
-			//{
-			//	writer.WriteLine(String.Format("manager {0} {1}",
-			//		DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"), configLocation));
-			//	writer.Flush();
-			//}
-
-			//IniData data = parser.ReadFile(configLocation);
-			//host = data["FTPPath"]["host"];
-			//userName = data["Credentials"]["name"];
-			//pwd = data["Credentials"]["pwd"];
-
-			//path = data["IngoingXML"]["path"];
-
+			
+			confManager = new ConfigFileManager();
+			confManager.ReadConfiguration();
 
 
 		}
 
 		public async Task<IEnumerable<T>> GetItems<T>(Types type) where T : class
 		{
-			FtpWebRequest request = (FtpWebRequest)FtpWebRequest.Create(host);
-			request.Credentials = new NetworkCredential(userName, pwd);
+			FtpWebRequest request = (FtpWebRequest)FtpWebRequest.Create(confManager.Host);
+			request.Credentials = new NetworkCredential(confManager.UserName, confManager.Password);
 			request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
 			request.UseBinary = true;
 			request.UsePassive = true;
@@ -109,7 +94,7 @@ namespace BLL.Managers
 		{
 			List<T> importedItems = new List<T>();
 			WebClient webRequest = new WebClient();
-			webRequest.Credentials = new NetworkCredential(userName, pwd);
+			webRequest.Credentials = new NetworkCredential(confManager.UserName, confManager.Password);
 			foreach (FtpDirItem file in files)
 			{
 
@@ -117,7 +102,7 @@ namespace BLL.Managers
 				try
 				{
 
-					byte[] newFileData = await webRequest.DownloadDataTaskAsync(new Uri(host + '/' + file.Name));
+					byte[] newFileData = await webRequest.DownloadDataTaskAsync(new Uri(confManager.Host + '/' + file.Name));
 
 					XDocument xml = new XDocument();
 					string path = System.Text.Encoding.UTF8.GetString(newFileData);
@@ -346,7 +331,7 @@ namespace BLL.Managers
 		private void SaveImportedXML(XDocument doc, string fileName, bool removeOriginal)
 		{
 			string now = DateTime.UtcNow.Date.ToShortDateString();
-			string path = this.path + "\\" + now + "\\";
+			string path = confManager.IngoingXMLPath + "\\" + now + "\\";
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
 		

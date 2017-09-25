@@ -13,6 +13,7 @@ namespace Models.DTO
 		public string Displaycode { get; set; }
 		public string SolidisPK { get; set; }
 		public List<ImportOrderLine> OrderLinesList { get; set; }
+		public string fileName { get; set; }
 	}
 
 	public class ImportOrderLine
@@ -23,5 +24,6 @@ namespace Models.DTO
 		public double QuantityToDo { get; set; }
 		public double AlternativeQuantityToDo { get; set; }
 		public string Notes { get; set; }
+		public string fileName { get; set; }
 	}
 }

@@ -27,6 +27,7 @@ namespace Models.DTO
 		public string Description { get; set; }
 		public string DefaultUnitOfMeasure { get; set; }
 		public string DefaultTradeUnitOfMeasure { get; set; }
+		public string fileName { get; set; }
 
 	}
 }

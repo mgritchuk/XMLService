@@ -289,30 +289,48 @@ namespace BLL.Managers
 						
 						switch (typeof(T).Name.ToString())
 						{
+							case "ImportCustomer":
+								{
+									(retrievedValues[i] as ImportCustomer).fileName = file.Name;
+									break;
+								}
+
+							case "ImportItem":
+								{
+									(retrievedValues[i] as ImportItem).fileName = file.Name;
+									break;
+								}
+
 							case "ImportInvoice":
 								{
+									(retrievedValues[i] as ImportInvoice).fileName = file.Name;
 									(retrievedValues[i] as ImportInvoice).InvoiceLines = new List<ImportInvoiceLine>();
 									foreach (XDocument xDoc in linesDocs[i])
 									{
 										(retrievedValues[i] as ImportInvoice).InvoiceLines.Add(AutoMapper.Mapper.Map<XDocument, ImportInvoiceLine>(xDoc));
+										(retrievedValues[i] as ImportInvoice).InvoiceLines.Last().fileName = (retrievedValues[i] as ImportInvoice).fileName;
 									}
 									break;
 								}
 							case "ImportSpecPrice":
 								{
+									(retrievedValues[i] as ImportSpecPrice).fileName = file.Name;
 									(retrievedValues[i] as ImportSpecPrice).PriceItems = new List<ImportSpecPriceItem>();
 									foreach (XDocument xDoc in linesDocs[i])
 									{
 										(retrievedValues[i] as ImportSpecPrice).PriceItems.Add(AutoMapper.Mapper.Map<XDocument, ImportSpecPriceItem>(xDoc));
+										(retrievedValues[i] as ImportSpecPrice).PriceItems.Last().fileName = (retrievedValues[i] as ImportSpecPrice).fileName;
 									}
 									break;
 								}
 							case "ImportOrder":
 								{
+									(retrievedValues[i] as ImportOrder).fileName = file.Name;
 									(retrievedValues[i] as ImportOrder).OrderLinesList = new List<ImportOrderLine>();
 									foreach (XDocument xDoc in linesDocs[i])
 									{
 										(retrievedValues[i] as ImportOrder).OrderLinesList.Add(AutoMapper.Mapper.Map<XDocument, ImportOrderLine>(xDoc));
+										(retrievedValues[i] as ImportOrder).OrderLinesList.Last().fileName = (retrievedValues[i] as ImportOrder).fileName;
 									}
 									break;
 								}

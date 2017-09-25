@@ -33,18 +33,18 @@ namespace ZegroXMLService.Scheduler
 				var retrievedInvoices = await manager.GetItems<ImportInvoice>(XMLManager.Types.INVOICE);
 				await DoPostsInvoices(retrievedInvoices);
 
-				var retrievedCustomers = await manager.GetItems<ImportCustomer>(XMLManager.Types.CUSTOMERS);
-				await DoPostsCustomers(retrievedCustomers);
-
-				var retrievedPrices = await manager.GetItems<ImportSpecPrice>(XMLManager.Types.SPECPRICE);
-				await DoPostsImportPrices(retrievedPrices);
-
-				var retrievedItemsList = await manager.GetItems<ImportItem>(XMLManager.Types.ITEMS);
-				await DoPostsImportItem(retrievedItemsList);
-				//ThreadPool.QueueUserWorkItem(async i => await DoPostsImportItem(retrievedItemsList));
-
-				var retrievedOrders = await manager.GetItems<ImportOrder>(XMLManager.Types.ORDER);
-				await DoPostsImportOrders(retrievedOrders);
+				//var retrievedCustomers = await manager.GetItems<ImportCustomer>(XMLManager.Types.CUSTOMERS);
+				//await DoPostsCustomers(retrievedCustomers);
+				//
+				//var retrievedPrices = await manager.GetItems<ImportSpecPrice>(XMLManager.Types.SPECPRICE);
+				//await DoPostsImportPrices(retrievedPrices);
+				//
+				//var retrievedItemsList = await manager.GetItems<ImportItem>(XMLManager.Types.ITEMS);
+				//await DoPostsImportItem(retrievedItemsList);
+				////ThreadPool.QueueUserWorkItem(async i => await DoPostsImportItem(retrievedItemsList));
+				//
+				//var retrievedOrders = await manager.GetItems<ImportOrder>(XMLManager.Types.ORDER);
+				//await DoPostsImportOrders(retrievedOrders);
 			}
 			catch (Exception ex)
 			{
@@ -175,7 +175,7 @@ namespace ZegroXMLService.Scheduler
 
 			using (HttpClient client = new HttpClient())
 			{
-				var invoicesLines = new List<ImportInvoiceLine>();
+				var invoicesLines = new List<List<ImportInvoiceLine>>();
 				client.BaseAddress = apiUri;
 				client.DefaultRequestHeaders.Accept.Clear();
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -185,7 +185,7 @@ namespace ZegroXMLService.Scheduler
 					{
 						l.InvoiceSolidisPK = item.SolidisPK;
 					}
-					invoicesLines.AddRange(item.InvoiceLines);
+					invoicesLines.Add(item.InvoiceLines);
 					item.InvoiceLines = new List<ImportInvoiceLine>();
 					StringContent content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
 					var response = await client.PostAsync("api/ImportedData/PostInvoice", content);
@@ -194,13 +194,22 @@ namespace ZegroXMLService.Scheduler
 
 					}
 				}
-				foreach (ImportInvoiceLine line in invoicesLines)
+				foreach (var itemlines in invoicesLines)
 				{
-					StringContent orderContent = new StringContent(JsonConvert.SerializeObject(line), Encoding.UTF8, "application/json");
-					var resp = await client.PostAsync("api/ImportedData/PostInvoiceLine", orderContent);
-					if (resp.IsSuccessStatusCode)
+					bool isSuccess = true;
+					foreach (ImportInvoiceLine line in itemlines)
 					{
-						//manager.DeleteOriginFile(item.filename);
+
+						StringContent orderContent = new StringContent(JsonConvert.SerializeObject(line), Encoding.UTF8, "application/json");
+						var resp = await client.PostAsync("api/ImportedData/PostInvoiceLine", orderContent);
+						if (!resp.IsSuccessStatusCode)
+						{
+							isSuccess = false;
+						}
+					}
+					if (isSuccess)
+					{
+						manager.DeleteOriginFile(itemlines[0].fileName);
 					}
 				}
 			}

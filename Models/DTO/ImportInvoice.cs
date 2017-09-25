@@ -17,6 +17,7 @@ namespace Models.DTO
 		public DateTime InvoiceDate { get; set; }
 		public string SolidisCustomerPK { get; set; }
 		public List<ImportInvoiceLine> InvoiceLines { get; set; }
+		public string fileName { get; set; }
 	}
 
 	public class ImportInvoiceLine
@@ -29,5 +30,6 @@ namespace Models.DTO
 		public double QuantityToDo { get; set; }
 		public double AlternativeQuantityToDo { get; set; }
 		public string ScannedBarcode { get; set; }
+		public string fileName { get; set; }
 	}
 }

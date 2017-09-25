@@ -14,6 +14,8 @@ namespace Models.DTO
 		public string Validation { get; set; }
 
 		public List<ImportSpecPriceItem> PriceItems { get; set; }
+
+		public string fileName { get; set; }
 	}
 
 	public class ImportSpecPriceItem
@@ -26,5 +28,6 @@ namespace Models.DTO
 		public DateTime StartDate { get; set; }
 		public DateTime EndDate { get; set; }
 		public string Type { get; set; }
+		public string fileName { get; set; }
 	}
 }
